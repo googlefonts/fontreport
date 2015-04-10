@@ -477,7 +477,7 @@ def main(argv):
       subprocess.check_call(['xelatex', tofile])
       subprocess.check_call(['xelatex', tofile])
   else:
-    print envelope.Report(xetex).encode('utf-8')
+    print envelope.Report(False).encode('utf-8')
 
 
 if __name__ == '__main__':
