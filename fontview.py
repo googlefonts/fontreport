@@ -23,7 +23,12 @@ class Glyph:
     self.name = name
     self.advanceWidth = None
     self.lsb = None
-    self.classDef = None
+    self.classDef = 0
+    self.caretList = None
+
+  def isLigature(self):
+    return self.caretList or self.classDef == 2
+
 
 class FontFile(object):
   """Representation of font metadata.
@@ -41,7 +46,11 @@ class FontFile(object):
     self.filename = filename
     self.ttf = TTFont(filename, fontNumber=-1, lazy=True)
     self._names = {}
+    self.chars = {}
+    self.glyphs = []
     self._ParseNames()
+    self._ParseGlyphs()
+    self._ParseCmap()
 
   def _ParseNames(self):
     if 'name' in self.ttf:
@@ -72,26 +81,36 @@ class FontFile(object):
     else:
       return manufacturer
 
-  def GetUnicodeCharacters(self):
-    chars = set()
+  def _ParseCmap(self):
     if 'cmap' in self.ttf:
       for table in self.ttf['cmap'].tables:
         if table.isUnicode():
           for code, name in table.cmap.items():
-            chars.add((code, name))
-    return sorted(chars)
+            self.chars[code] = name
 
-  def GetGlyphs(self):
-    """Fetch available glyph names."""
-    result = []
+  def _ParseGlyphs(self):
+    """Fetch available glyphs."""
+    classDefs = {}
+    classNames = {2:'ligature', 3:'mark', 4: 'component' }
+    caretList = {}
+    metrics = {}
+    if 'GDEF' in self.ttf:
+      classDefs = self.ttf['GDEF'].table.GlyphClassDef.classDefs
+      fontCaretList = self.ttf['GDEF'].table.LigCaretList
+      if fontCaretList:
+        carets = [tuple(x.Coordinate for x in y.CaretValue) for y in fontCaretList.LigGlyph]
+        caretList = dict(zip(fontCaretList.Coverage.glyphs, carets))
+
+    if 'hmtx' in self.ttf:
+      metrics = self.ttf['hmtx'].metrics
+
     for name in self.ttf.getGlyphOrder():
       glyph = Glyph(name)
-      if 'hmtx' in self.ttf:
-        glyph.advanceWidth, glyph.lsb = self.ttf['hmtx'].metrics.get(name, [None, None])
-      if 'GDEF' in self.ttf:
-        glyph.classDef = self.ttf['GDEF'].table.GlyphClassDef.classDefs.get(name, 0)
-      result.append(glyph)
-    return result
+      glyph.advanceWidth, glyph.lsb = metrics.get(name, [None, None])
+      glyph.classDef = classDefs.get(name, 0)
+      glyph.className = classNames.get(glyph.classDef, None)
+      glyph.caretList = caretList.get(name, ())
+      self.glyphs.append(glyph)
 
   def GetName(self, name, default=None):
     return self._names.get(self.NAME_CODES[name], default)
@@ -119,10 +138,9 @@ class Report(object):
     return self.TETEX_HEADER + self.XetexBody() + self.TETEX_FOOTER
 
 
-
-
 class UnicodeCoverageReport(Report):
   TETEX_HEADER = r'''
+    \definecolor{missing}{gray}{.95}
     \begin{longtable}[l]{|r|l|p{0.6\textwidth}|}
     \hline
     \endhead
@@ -135,7 +153,7 @@ class UnicodeCoverageReport(Report):
 
   def Plaintext(self):
     data = ''
-    for code, name in self.font.GetUnicodeCharacters():
+    for code, name in sorted(self.font.chars.iteritems()):
       try:
         uniname = unicodedata.name(unichr(code))
       except ValueError:
@@ -146,13 +164,13 @@ class UnicodeCoverageReport(Report):
   def XetexBody(self):
     data = ''
     prevcode = 0
-    for code, name in self.font.GetUnicodeCharacters():
+    for code in sorted(self.font.chars):
       try:
         uniname = unicodedata.name(unichr(code))
       except ValueError:
         uniname = ''
       if code - prevcode > 1:
-        data += '\hline\n'
+        data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints missing} \\\\\n' % (code - prevcode + 1)
       prevcode = code
       data += '\\texttt{%04X} & {\\customfont\\symbol{%d}} & {\\small %s}\\\\\n' % (code, code, uniname)
     return data
@@ -161,9 +179,13 @@ class GlyphsReport(Report):
   NAME = 'Glyphs'
 
   TETEX_HEADER = r'''
-    \begin{longtable}[l]{|r|l|l|r|r|r|}
+    \definecolor{ligature}{RGB}{255, 255, 200}
+    \definecolor{mark}{RGB}{255, 200, 255}
+    \definecolor{component}{RGB}{200, 255, 255}
+    \begin{longtable}[l]{|r|l|l|r|r|r|p{.2\textwidth}|}
     \hline
-    Index & Glyph & Name & Adv. Width & lsb & Class \\
+    \rowcolor{header}
+    Index & Glyph & Name & Adv. Width & lsb & Class & Chars\\
     \hline
     \endhead
     \hline
@@ -174,18 +196,58 @@ class GlyphsReport(Report):
 
   def Plaintext(self):
     data = ''
-    for idx, glyph in enumerate(self.font.GetGlyphs()):
-      data += "%6d %s\n" % (idx, glyph.name)
+    for idx, glyph in enumerate(self.font.glyphs):
+      data += "%6d %-30s %6d %6d %3d\n" % (idx, glyph.name, glyph.advanceWidth, glyph.lsb, glyph.classDef)
     return data
 
   def XetexBody(self):
     data = ''
-    for idx, glyph in enumerate(self.font.GetGlyphs()):
-      data += "%d & {\customfont\XeTeXglyph %d} & %s & %d & %d & %d\\\\\n" % (
-          idx, idx, glyph.name.replace('_', r'\_'),
-          glyph.advanceWidth, glyph.lsb, glyph.classDef)
+    uni = {}
+    for code, name in self.font.chars.iteritems():
+      if name not in uni:
+        uni[name] = []
+      uni[name].append(code)
+    for idx, glyph in enumerate(self.font.glyphs):
+      if glyph.className:
+        data += '\\rowcolor{%s}\n' % glyph.className
+      if glyph.name in uni:
+        chars = ', '.join('u%04X' % x for x in uni[glyph.name])
+      else:
+        chars = ''
+      data += "%d & {\customfont\XeTeXglyph %d} & %s & %d & %d & %d & %s\\\\\n" % (
+          idx, idx, TexEscape(glyph.name),
+          glyph.advanceWidth, glyph.lsb, glyph.classDef, chars)
     return data
 
+class LigaturesReport(Report):
+  TETEX_HEADER = r'''
+    \begin{longtable}[l]{|l|l|l|}
+    \hline
+    \rowcolor{header}
+    Glyph & Name & Caret Positions \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+  '''
+  TETEX_FOOTER = r'\end{longtable}'
+
+  NAME = 'Ligatures'
+
+  def Plaintext(self):
+    data = ''
+    for glyph in self.font.glyphs:
+      if glyph.isLigature():
+        data += "%-30s\t%s\n" % (glyph.name, glyph.caretList)
+    return data
+
+  def XetexBody(self):
+    data = ''
+    for idx, glyph in enumerate(self.font.glyphs):
+      if glyph.isLigature():
+        coords = ', '.join(str(x) for x in glyph.caretList) if glyph.caretList else ''
+        data += '{\customfont\XeTeXglyph %d} & %s & %s\\\\\n' % (idx, TexEscape(glyph.name), coords)
+    return data
 
 class SummaryReport(Report):
   TETEX_HEADER = r'''
@@ -204,11 +266,11 @@ class SummaryReport(Report):
     return '\n'.join('%s & %d \\\\' % x for x in self._GetData())
 
   def _GetData(self):
-    glyphs = self.font.GetGlyphs()
+    glyphs = self.font.glyphs
     count = {2: 0, 3: 0, 4: 0}
     for x in glyphs:
       count[x.classDef] = count.get(x.classDef, 0) + 1
-    return (('Unicode characters', len(self.font.GetUnicodeCharacters())),
+    return (('Unicode characters', len(self.font.chars)),
             ('Glyphs', len(glyphs)),
             ('Ligature glyphs', count[2]),
             ('Mark glyphs', count[3]),
@@ -224,6 +286,8 @@ class Envelope(Report):
     \documentclass[10pt]{article}
     \usepackage{fontspec}
     \usepackage{longtable}
+    \usepackage[table]{xcolor}
+    \definecolor{header}{gray}{.9}
     \usepackage{hyperref}
     \hypersetup{
         colorlinks,
@@ -241,7 +305,7 @@ class Envelope(Report):
     \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
   '''
 
-  KNOWN_REPORTS = (SummaryReport, UnicodeCoverageReport, GlyphsReport)
+  KNOWN_REPORTS = (SummaryReport, UnicodeCoverageReport, GlyphsReport, LigaturesReport)
 
   def Plaintext(self):
     data = ''
@@ -266,6 +330,10 @@ class Envelope(Report):
         pass
       data += report(self.font).Xetex() + '\n'
     return data
+
+
+def TexEscape(name):
+  return name.replace('_', r'\_').replace('#', r'\#')
 
 
 def main(argv):
