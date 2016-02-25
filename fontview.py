@@ -129,7 +129,7 @@ class FontFile(object):
       classDefs = self.ttf['GDEF'].table.GlyphClassDef.classDefs
       fontCaretList = self.ttf['GDEF'].table.LigCaretList
       if fontCaretList:
-        carets = [tuple(x.Coordinate for x in y.CaretValue)
+        carets = [tuple(str(x.Coordinate) for x in y.CaretValue)
                   for y in fontCaretList.LigGlyph]
         caretList = dict(zip(fontCaretList.Coverage.glyphs, carets))
 
@@ -215,7 +215,7 @@ class UnicodeCoverageReport(Report):
       except ValueError:
         uniname = ''
       if code - prevcode > 1:
-        data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints missing} \\\\\n' % (code - prevcode + 1)
+        data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints gap} \\\\\n' % (code - prevcode - 1)
       prevcode = code
       data += '\\texttt{%04X} & {\\customfont\\symbol{%d}} & {\\small %s}\\\\\n' % (code, code, uniname)
     return data
@@ -389,6 +389,7 @@ class Envelope(Report):
     \documentclass[10pt]{article}
     \usepackage{fontspec}
     \usepackage{longtable}
+    \usepackage[top=.25in, bottom=.25in, left=.5in, right=.5in]{geometry}
     \usepackage[table]{xcolor}
     \definecolor{header}{gray}{.9}
     \usepackage{hyperref}
