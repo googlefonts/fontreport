@@ -34,10 +34,12 @@ class Glyph(object):
     self.caretList = None
     self.sequences = None
     self.alternates = None
+    self.chars = []
     self.index = -1
 
   def isLigature(self):
-    return self.caretList or self.classDef == 2
+    #return self.caretList or self.classDef == 2
+    return self.caretList or self.sequences
 
 
 class FontFile(object):
@@ -60,7 +62,9 @@ class FontFile(object):
     self._glyphsmap = {}
     self.glyphs = []
     self.ligatures = {}
+    self.mapping = {}
     self.alternates = {}
+    self.features = []
     self._ParseNames()
     self._ParseCmap()
     self._ParseGSUB()
@@ -106,8 +110,15 @@ class FontFile(object):
     if 'GSUB' not in self.ttf:
       return
 
+    # Find all featrures defined in a font
+    for feature in self.ttf['GSUB'].table.FeatureList.FeatureRecord:
+      self.features.append((feature.FeatureTag, feature.Feature.LookupListIndex))
+
     for lookup in self.ttf['GSUB'].table.LookupList.Lookup:
       for sub in lookup.SubTable:
+        if sub.LookupType == 1:
+          self.alternates.update(((k,[v]) for k, v in sub.mapping.iteritems()))
+          #self.mapping.update(sub.mapping)
         if sub.LookupType == 3:
           self.alternates.update(sub.alternates)
         elif sub.LookupType == 4:
@@ -145,9 +156,13 @@ class FontFile(object):
       glyph.caretList = caretList.get(name, ())
       glyph.sequences = self.ligatures.get(name, None)
       glyph.alternates = self.alternates.get(name, None)
-      glyph.chars = [k for k, v in self.chars.iteritems() if v == name]
       self.glyphs.append(glyph)
       self._glyphsmap[name] = glyph
+    for k, v in self.chars.iteritems():
+      try:
+        self._glyphsmap[v].chars.append(k)
+      except KeyError:
+        print '%s is mapped to non-existent glyph %s' % (k, v)
 
   def GetName(self, name, default=None):
     return self._names.get(self.NAME_CODES[name], default)
@@ -215,7 +230,10 @@ class UnicodeCoverageReport(Report):
       except ValueError:
         uniname = ''
       if code - prevcode > 1:
-        data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints gap} \\\\\n' % (code - prevcode - 1)
+        gaps = len([x for x in  xrange(prevcode + 1, code)
+                    if unicodedata.category(unichr(x))[0] != 'C'])
+        if gaps:
+          data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints not mapped} \\\\\n' % (gaps)
       prevcode = code
       data += '\\texttt{%04X} & {\\customfont\\symbol{%d}} & {\\small %s}\\\\\n' % (code, code, uniname)
     return data
@@ -366,7 +384,8 @@ class SummaryReport(Report):
     return '\n'.join('%20s: %d' % x for x in self._GetData())
 
   def XetexBody(self):
-    return '\n'.join('%s & %d \\\\' % x for x in self._GetData())
+    data = '\n'.join('%s & %d \\\\' % x for x in self._GetData())
+    return data
 
   def _GetData(self):
     glyphs = self.font.glyphs
