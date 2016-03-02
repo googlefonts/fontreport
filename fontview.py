@@ -117,22 +117,22 @@ class FontFile(object):
     if 'GSUB' not in self.ttf:
       return
 
-    scripts = [None] * self.ttf['GSUB'].table.FeatureList.FeatureCount
+    scripts = [set() for x in xrange(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
     # Find scripts defined in a font
     for script in self.ttf['GSUB'].table.ScriptList.ScriptRecord:
       if script.Script.DefaultLangSys:
         for idx in script.Script.DefaultLangSys.FeatureIndex:
-          scripts[idx] = script.ScriptTag
+          scripts[idx].add(script.ScriptTag)
       for lang in script.Script.LangSysRecord:
         for idx in lang.LangSys.FeatureIndex:
-          scripts[idx] = script.ScriptTag + '-' + lang.LangSysTag
+          scripts[idx].add(script.ScriptTag + '-' + lang.LangSysTag)
 
     # Find all featrures defined in a font
     for idx, feature in enumerate(self.ttf['GSUB'].table.FeatureList.FeatureRecord):
       key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
       if key not in self.features:
         self.features[key] = set()
-      self.features[key].add(scripts[idx])
+      self.features[key].update(scripts[idx])
 
     for idx, lookup in enumerate(self.ttf['GSUB'].table.LookupList.Lookup):
       for sub in lookup.SubTable:
@@ -324,14 +324,14 @@ class LigaturesReport(Report):
 
   def Plaintext(self):
     data = ''
-    for glyph, caretList in self.font.caretList.iteritems():
+    for glyph, caretList in sorted(self.font.caretList.iteritems()):
       data += '%-10s\t%s\t%s\n' % (
           glyph, ', '.join(caretList), '-')
     return data
 
   def XetexBody(self):
     data = ''
-    for glyph, caretList in self.font.caretList.iteritems():
+    for glyph, caretList in sorted(self.font.caretList.iteritems()):
       coords = ', '.join(str(x) for x in caretList)
       data += '%s(%s) & %s & %s \\\\\n' % (
           TexGlyph(self.font.GetGlyph(glyph)), TexEscape(glyph),
@@ -390,7 +390,7 @@ class SubstitutionsReport(Report):
 class FeaturesReport(Report):
   """Report OpenType features."""
   TETEX_HEADER = r'''
-    \begin{longtable}[l]{|l|l|l|l|}
+    \begin{longtable}[l]{|l|p{.2\textwidth}|p{.4\textwidth}|l|}
     \hline
     \rowcolor{header}
     Feature & Description & Scripts & Lookup Tables \\
@@ -403,22 +403,59 @@ class FeaturesReport(Report):
 
   NAME = 'OpenType Features'
 
+  KNOWN_FEATURES = {
+      'aalt': 'All Alternates',
+      'case': 'Case-Sensitive Forms',
+      'ccmp': 'Glyph Composition/Decomposition',
+      'c2sc': 'Small Capitals From Capitals',
+      'dlig': 'Discretionary Ligatures',
+      'fina': 'Terminal Forms',
+      'frac': 'Fractions',
+      'fwid': 'Full Width',
+      'hlig': 'Historical Ligatures',
+      'hwid': 'Half Width',
+      'init': 'Initial Forms',
+      'isol': 'Isolated Forms',
+      'liga': 'Standard Ligatures',
+      'lnum': 'Lining Figures',
+      'locl': 'Localized Forms',
+      'medi': 'Medial Forms',
+      'onum': 'Oldstyle Figures',
+      'pnum': 'Proportional Figures',
+      'pwid': 'Proportional Width',
+      'rlig': 'Required Ligatures',
+      'salt': 'Stylistic Alternates',
+      'sinf': 'Scientific Inferiors',
+      'smcp': 'Small Capitals',
+      'ss01': 'Stylistic Set 1',
+      'ss02': 'Stylistic Set 2',
+      'ss03': 'Stylistic Set 3',
+      'subs': 'Subscript',
+      'sups': 'Superscript',
+      'tnum': 'Tabular Figures',
+      'vert': 'Vertical Writing',
+      'vrt2': 'Vertical Alternates and Rotation',
+      'zero': 'Slashed Zero',
+  }
+
   def Plaintext(self):
     data = ''
     for key, scripts in sorted(self.font.features.iteritems()):
       feature, tables = key
       scriptlist = ', '.join(x for x in scripts if x)
-      data += '%4s\t%s\t%s\t%s\n' % (feature, 'N/A', scriptlist,
-                                 ', '.join(str(x) for x in tables))
+      data += '%4s\t%s\t%s\t%s\n' % (
+          feature, self.KNOWN_FEATURES.get(feature, 'N/A'),
+          scriptlist, ', '.join(str(x) for x in tables))
     return data
 
   def XetexBody(self):
     data = ''
     for key, scripts in sorted(self.font.features.iteritems()):
       feature, tables = key
-      scriptlist = ', '.join(x for x in scripts if x)
+      scriptlist = ', '.join(x.strip() for x in sorted(scripts) if x)
       data += '%s & %s & %s & %s  \\\\\n' % (
-          feature, 'N/A', scriptlist, ', '.join(str(x) for x in tables))
+          feature, self.KNOWN_FEATURES.get(feature, 'N/A'),
+          scriptlist, ', '.join(str(x) for x in tables))
     return data
 
 
