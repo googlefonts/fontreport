@@ -31,15 +31,10 @@ class Glyph(object):
     self.advanceWidth = None
     self.lsb = None
     self.classDef = 0
-    self.caretList = None
     self.sequences = None
     self.alternates = None
     self.chars = []
     self.index = -1
-
-  def isLigature(self):
-    #return self.caretList or self.classDef == 2
-    return self.caretList or self.sequences
 
 
 class FontFile(object):
@@ -56,15 +51,15 @@ class FontFile(object):
 
   def __init__(self, filename):
     self.filename = filename
-    self.ttf = TTFont(filename, fontNumber=-1, lazy=True)
+    self.ttf = TTFont(filename, fontNumber=-1, lazy=False)
     self._names = {}
     self.chars = {}
     self._glyphsmap = {}
     self.glyphs = []
-    self.ligatures = {}
-    self.mapping = {}
-    self.alternates = {}
-    self.features = []
+    self.features = {}
+    self.caretList = {}
+    self.substitutes = set()
+    self.caretList = {}
     self._ParseNames()
     self._ParseCmap()
     self._ParseGSUB()
@@ -96,8 +91,20 @@ class FontFile(object):
       return '%s (%s)' % (author, manufacturer)
     elif author:
       return author
-    else:
+    elif manufacturer:
       return manufacturer
+    else:
+      return 'Author is not set'
+
+  def GetFeaturesByTable(self):
+    mapping = {}
+    for key, scripts in self.features.iteritems():
+      feature, tables = key
+      for table in tables:
+        if table not in mapping:
+          mapping[table] = set()
+        mapping[table].add((feature, tuple(sorted(scripts))))
+    return mapping
 
   def _ParseCmap(self):
     if 'cmap' in self.ttf:
@@ -110,31 +117,47 @@ class FontFile(object):
     if 'GSUB' not in self.ttf:
       return
 
-    # Find all featrures defined in a font
-    for feature in self.ttf['GSUB'].table.FeatureList.FeatureRecord:
-      self.features.append((feature.FeatureTag, feature.Feature.LookupListIndex))
+    scripts = [None] * self.ttf['GSUB'].table.FeatureList.FeatureCount
+    # Find scripts defined in a font
+    for script in self.ttf['GSUB'].table.ScriptList.ScriptRecord:
+      if script.Script.DefaultLangSys:
+        for idx in script.Script.DefaultLangSys.FeatureIndex:
+          scripts[idx] = script.ScriptTag
+      for lang in script.Script.LangSysRecord:
+        for idx in lang.LangSys.FeatureIndex:
+          scripts[idx] = script.ScriptTag + '-' + lang.LangSysTag
 
-    for lookup in self.ttf['GSUB'].table.LookupList.Lookup:
+    # Find all featrures defined in a font
+    for idx, feature in enumerate(self.ttf['GSUB'].table.FeatureList.FeatureRecord):
+      key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
+      if key not in self.features:
+        self.features[key] = set()
+      self.features[key].add(scripts[idx])
+
+    for idx, lookup in enumerate(self.ttf['GSUB'].table.LookupList.Lookup):
       for sub in lookup.SubTable:
         if sub.LookupType == 1:
-          self.alternates.update(((k,[v]) for k, v in sub.mapping.iteritems()))
-          #self.mapping.update(sub.mapping)
-        if sub.LookupType == 3:
-          self.alternates.update(sub.alternates)
+          for k, v in sub.mapping.iteritems():
+            self.substitutes.add(((k,), ((v,),), idx, 1))
+        elif sub.LookupType == 2:
+          for k, v in sub.mapping.iteritems():
+            self.substitutes.add(((k,),  (tuple(v),), idx, 1))
+        elif sub.LookupType == 3:
+          for k, v in sub.alternates.iteritems():
+            self.substitutes.add(((k,), tuple((x,) for x in v), idx, 3))
         elif sub.LookupType == 4:
           for key, value in sub.ligatures.iteritems():
             for component in value:
               sequence = tuple([key] + component.Component)
               glyph = component.LigGlyph
-              if glyph not in self.ligatures:
-                self.ligatures[glyph] = set()
-              self.ligatures[glyph].add(sequence)
+              self.substitutes.add((sequence, ((glyph,),), idx, 4))
+        else:
+          print 'Lookup table %d: type %s not yet supported.' % (idx, sub.LookupType)
 
   def _ParseGlyphs(self):
     """Fetch available glyphs."""
     classDefs = {}
     classNames = {2: 'ligature', 3: 'mark', 4: 'component'}
-    caretList = {}
     metrics = {}
     if 'GDEF' in self.ttf:
       classDefs = self.ttf['GDEF'].table.GlyphClassDef.classDefs
@@ -142,7 +165,7 @@ class FontFile(object):
       if fontCaretList:
         carets = [tuple(str(x.Coordinate) for x in y.CaretValue)
                   for y in fontCaretList.LigGlyph]
-        caretList = dict(zip(fontCaretList.Coverage.glyphs, carets))
+        self.caretList = dict(zip(fontCaretList.Coverage.glyphs, carets))
 
     if 'hmtx' in self.ttf:
       metrics = self.ttf['hmtx'].metrics
@@ -153,9 +176,6 @@ class FontFile(object):
       glyph.advanceWidth, glyph.lsb = metrics.get(name, [None, None])
       glyph.classDef = classDefs.get(name, 0)
       glyph.className = classNames.get(glyph.classDef, None)
-      glyph.caretList = caretList.get(name, ())
-      glyph.sequences = self.ligatures.get(name, None)
-      glyph.alternates = self.alternates.get(name, None)
       self.glyphs.append(glyph)
       self._glyphsmap[name] = glyph
     for k, v in self.chars.iteritems():
@@ -292,7 +312,7 @@ class LigaturesReport(Report):
     \begin{longtable}[l]{|l|l|l|p{.5\textwidth}|}
     \hline
     \rowcolor{header}
-    Glyph & Name & Caret Positions & Sequences \\
+    Glyph & Caret Positions & Sequences \\
     \hline
     \endhead
     \hline
@@ -300,49 +320,32 @@ class LigaturesReport(Report):
   '''
   TETEX_FOOTER = r'\end{longtable}'
 
-  NAME = 'Ligatures'
+  NAME = 'Ligatures with Carets'
 
   def Plaintext(self):
     data = ''
-    for glyph in self.font.glyphs:
-      if glyph.isLigature():
-        data += '%-30s\t%s\t%s\n' % (
-            glyph.name, ', '.join(glyph.caretList) if glyph.caretList else '-',
-            ', '.join(' '.join(x)
-                      for x in glyph.sequences) if glyph.sequences else '-')
+    for glyph, caretList in self.font.caretList.iteritems():
+      data += '%-10s\t%s\t%s\n' % (
+          glyph, ', '.join(caretList), '-')
     return data
 
   def XetexBody(self):
     data = ''
-    for glyph in self.font.glyphs:
-      if glyph.isLigature():
-        coords = ', '.join(
-            str(x) for x in glyph.caretList) if glyph.caretList else ''
-        items = []
-        if glyph.sequences:
-          for sequence in glyph.sequences:
-            seqitems = []
-            for name in sequence:
-              g = self.font.GetGlyph(name)
-              if g.chars:
-                path = ','.join('u%04X' % x for x in g.chars)
-              else:
-                path = name
-              seqitems.append('%s(%s)' % (TexGlyph(g), path))
-            items.append(' '.join(seqitems))
-        data += '%s & %s & %s & %s \\\\\n' % (
-            TexGlyph(glyph), TexEscape(glyph.name),
-            coords, ',\\newline '.join(items))
+    for glyph, caretList in self.font.caretList.iteritems():
+      coords = ', '.join(str(x) for x in caretList)
+      data += '%s(%s) & %s & %s \\\\\n' % (
+          TexGlyph(self.font.GetGlyph(glyph)), TexEscape(glyph),
+          coords, '-' )
     return data
 
 
-class AlternatesReport(Report):
-  """Report alternate glyphs."""
+class SubstitutionsReport(Report):
+  """Report GPOS substitutions."""
   TETEX_HEADER = r'''
-    \begin{longtable}[l]{|l|l|p{.7\textwidth}|}
+    \begin{longtable}[l]{|c|c|p{.7\textwidth}|}
     \hline
     \rowcolor{header}
-    Glyph & Name & Alternates \\
+    Table & Feature & Substitution  \\
     \hline
     \endhead
     \hline
@@ -350,23 +353,72 @@ class AlternatesReport(Report):
   '''
   TETEX_FOOTER = r'\end{longtable}'
 
-  NAME = 'Alternates'
+  NAME = 'GPOS Substitutions'
 
   def Plaintext(self):
     data = ''
-    for glyph in self.font.glyphs:
-      if glyph.alternates:
-        data += '%-30s\t%s\n' % (glyph.name, ', '.join(glyph.alternates))
+    for table, features, src, dest in self.GetTableItems():
+      data += '%4d\t%-20s\t%s\n' % (
+          table,
+          ', '.join(features),
+          ' '.join(src) + ' -> ' +
+          ', '.join(' '.join(y) for y in dest))
+    return data
+
+  def XetexBody(self):
+    features_mapping = self.font.GetFeaturesByTable()
+    data = ''
+    for table, features, src, dest in self.GetTableItems():
+      sequence = ' '.join('%s(%s)' % (
+          TexGlyph(self.font.GetGlyph(x)), TexEscape(x)) for x in src)
+      alternates = ', '.join(' '.join('%s(%s)' % (
+          TexGlyph(self.font.GetGlyph(x)), TexEscape(x)) for x in y) for y in dest)
+      data += '%d & %s & %s$\\rightarrow$%s \\\\\n' % (
+          table, ', '.join(features), sequence, alternates)
+    return data
+
+  def GetTableItems(self):
+    features_mapping = self.font.GetFeaturesByTable()
+    for src, dest, table, kind in sorted(self.font.substitutes, key=lambda x:(x[2], x[0])):
+      if table in features_mapping:
+        features = sorted(set(k for k, v in features_mapping[table]))
+      else:
+        features = ()
+      yield (table, features, src, dest)
+
+
+class FeaturesReport(Report):
+  """Report OpenType features."""
+  TETEX_HEADER = r'''
+    \begin{longtable}[l]{|l|l|l|l|}
+    \hline
+    \rowcolor{header}
+    Feature & Description & Scripts & Lookup Tables \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+  '''
+  TETEX_FOOTER = r'\end{longtable}'
+
+  NAME = 'OpenType Features'
+
+  def Plaintext(self):
+    data = ''
+    for key, scripts in sorted(self.font.features.iteritems()):
+      feature, tables = key
+      scriptlist = ', '.join(x for x in scripts if x)
+      data += '%4s\t%s\t%s\t%s\n' % (feature, 'N/A', scriptlist,
+                                 ', '.join(str(x) for x in tables))
     return data
 
   def XetexBody(self):
     data = ''
-    for glyph in self.font.glyphs:
-      if glyph.alternates:
-        alternates = ', '.join('%s(%s)' % (
-            TexGlyph(self.font.GetGlyph(x)), x) for x in glyph.alternates)
-        data += '%s & %s & %s \\\\\n' % (
-            TexGlyph(glyph), TexEscape(glyph.name), alternates)
+    for key, scripts in sorted(self.font.features.iteritems()):
+      feature, tables = key
+      scriptlist = ', '.join(x for x in scripts if x)
+      data += '%s & %s & %s & %s  \\\\\n' % (
+          feature, 'N/A', scriptlist, ', '.join(str(x) for x in tables))
     return data
 
 
@@ -429,7 +481,8 @@ class Envelope(Report):
   '''
 
   KNOWN_REPORTS = (SummaryReport, UnicodeCoverageReport,
-                   GlyphsReport, LigaturesReport, AlternatesReport)
+                   GlyphsReport, FeaturesReport,
+                   LigaturesReport, SubstitutionsReport)
 
   def Plaintext(self):
     data = ''
