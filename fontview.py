@@ -168,7 +168,7 @@ class FontFile(object):
       if caret_list:
         carets = [tuple(str(x.Coordinate) for x in y.CaretValue)
                   for y in caret_list.LigGlyph]
-        self.caret_list = dict(zip(fontCaretList.Coverage.glyphs, carets))
+        self.caret_list = dict(zip(caret_list.Coverage.glyphs, carets))
 
     if 'hmtx' in self.ttf:
       metrics = self.ttf['hmtx'].metrics
