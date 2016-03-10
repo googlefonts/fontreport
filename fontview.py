@@ -28,9 +28,9 @@ class Glyph(object):
 
   def __init__(self, name):
     self.name = name
-    self.advanceWidth = None
+    self.advance_idth = None
     self.lsb = None
-    self.classDef = 0
+    self.class_def = 0
     self.sequences = None
     self.alternates = None
     self.chars = []
@@ -57,9 +57,9 @@ class FontFile(object):
     self._glyphsmap = {}
     self.glyphs = []
     self.features = {}
-    self.caretList = {}
+    self.caret_list = {}
     self.substitutes = set()
-    self.caretList = {}
+    self.caret_list = {}
     self._ParseNames()
     self._ParseCmap()
     self._ParseGSUB()
@@ -117,7 +117,8 @@ class FontFile(object):
     if 'GSUB' not in self.ttf:
       return
 
-    scripts = [set() for x in xrange(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
+    scripts = [set() for unused_x
+               in xrange(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
     # Find scripts defined in a font
     for script in self.ttf['GSUB'].table.ScriptList.ScriptRecord:
       if script.Script.DefaultLangSys:
@@ -128,7 +129,8 @@ class FontFile(object):
           scripts[idx].add(script.ScriptTag + '-' + lang.LangSysTag)
 
     # Find all featrures defined in a font
-    for idx, feature in enumerate(self.ttf['GSUB'].table.FeatureList.FeatureRecord):
+    for idx, feature in enumerate(
+        self.ttf['GSUB'].table.FeatureList.FeatureRecord):
       key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
       if key not in self.features:
         self.features[key] = set()
@@ -141,7 +143,7 @@ class FontFile(object):
             self.substitutes.add(((k,), ((v,),), idx, 1))
         elif sub.LookupType == 2:
           for k, v in sub.mapping.iteritems():
-            self.substitutes.add(((k,),  (tuple(v),), idx, 1))
+            self.substitutes.add(((k,), (tuple(v),), idx, 1))
         elif sub.LookupType == 3:
           for k, v in sub.alternates.iteritems():
             self.substitutes.add(((k,), tuple((x,) for x in v), idx, 3))
@@ -152,20 +154,21 @@ class FontFile(object):
               glyph = component.LigGlyph
               self.substitutes.add((sequence, ((glyph,),), idx, 4))
         else:
-          print 'Lookup table %d: type %s not yet supported.' % (idx, sub.LookupType)
+          print 'Lookup table %d: type %s not yet supported.' % (
+              idx, sub.LookupType)
 
   def _ParseGlyphs(self):
     """Fetch available glyphs."""
-    classDefs = {}
-    classNames = {2: 'ligature', 3: 'mark', 4: 'component'}
+    class_defs = {}
+    class_names = {2: 'ligature', 3: 'mark', 4: 'component'}
     metrics = {}
     if 'GDEF' in self.ttf:
-      classDefs = self.ttf['GDEF'].table.GlyphClassDef.classDefs
-      fontCaretList = self.ttf['GDEF'].table.LigCaretList
-      if fontCaretList:
+      class_defs = self.ttf['GDEF'].table.GlyphClassDef.classDefs
+      caret_list = self.ttf['GDEF'].table.LigCaretList
+      if caret_list:
         carets = [tuple(str(x.Coordinate) for x in y.CaretValue)
-                  for y in fontCaretList.LigGlyph]
-        self.caretList = dict(zip(fontCaretList.Coverage.glyphs, carets))
+                  for y in caret_list.LigGlyph]
+        self.caret_list = dict(zip(fontCaretList.Coverage.glyphs, carets))
 
     if 'hmtx' in self.ttf:
       metrics = self.ttf['hmtx'].metrics
@@ -173,9 +176,9 @@ class FontFile(object):
     for idx, name in enumerate(self.ttf.getGlyphOrder()):
       glyph = Glyph(name)
       glyph.index = idx
-      glyph.advanceWidth, glyph.lsb = metrics.get(name, [None, None])
-      glyph.classDef = classDefs.get(name, 0)
-      glyph.className = classNames.get(glyph.classDef, None)
+      glyph.advance_width, glyph.lsb = metrics.get(name, [None, None])
+      glyph.class_def = class_defs.get(name, 0)
+      glyph.class_name = class_names.get(glyph.class_def, None)
       self.glyphs.append(glyph)
       self._glyphsmap[name] = glyph
     for k, v in self.chars.iteritems():
@@ -253,9 +256,11 @@ class UnicodeCoverageReport(Report):
         gaps = len([x for x in  xrange(prevcode + 1, code)
                     if unicodedata.category(unichr(x))[0] != 'C'])
         if gaps:
-          data += '\\rowcolor{missing}\\multicolumn{3}{|c|}{\\small %d codepoints not mapped} \\\\\n' % (gaps)
+          data += ('\\rowcolor{missing}\\multicolumn{3}{|c|}'
+                   '{\\small %d codepoints not mapped} \\\\\n') % (gaps)
       prevcode = code
-      data += '\\texttt{%04X} & {\\customfont\\symbol{%d}} & {\\small %s}\\\\\n' % (code, code, uniname)
+      data += ('\\texttt{%04X} & {\\customfont\\symbol{%d}} &'
+               '{\\small %s}\\\\\n') % (code, code, uniname)
     return data
 
 
@@ -282,8 +287,8 @@ class GlyphsReport(Report):
     data = ''
     for glyph in self.font.glyphs:
       data += '%6d %-30s %6d %6d %3d\n' % (
-          glyph.index, glyph.name, glyph.advanceWidth,
-          glyph.lsb, glyph.classDef)
+          glyph.index, glyph.name, glyph.advance_width,
+          glyph.lsb, glyph.class_def)
     return data
 
   def XetexBody(self):
@@ -294,15 +299,15 @@ class GlyphsReport(Report):
         uni[name] = []
       uni[name].append(code)
     for glyph in self.font.glyphs:
-      if glyph.className:
-        data += '\\rowcolor{%s}\n' % glyph.className
+      if glyph.class_name:
+        data += '\\rowcolor{%s}\n' % glyph.class_name
       if glyph.name in uni:
         chars = ', '.join('u%04X' % x for x in glyph.chars)
       else:
         chars = ''
       data += '%d & %s & %s & %d & %d & %d & %s\\\\\n' % (
           glyph.index, TexGlyph(glyph), TexEscape(glyph.name),
-          glyph.advanceWidth, glyph.lsb, glyph.classDef, chars)
+          glyph.advance_width, glyph.lsb, glyph.class_def, chars)
     return data
 
 
@@ -324,18 +329,18 @@ class LigaturesReport(Report):
 
   def Plaintext(self):
     data = ''
-    for glyph, caretList in sorted(self.font.caretList.iteritems()):
+    for glyph, caret_list in sorted(self.font.caret_list.iteritems()):
       data += '%-10s\t%s\t%s\n' % (
-          glyph, ', '.join(caretList), '-')
+          glyph, ', '.join(caret_list), '-')
     return data
 
   def XetexBody(self):
     data = ''
-    for glyph, caretList in sorted(self.font.caretList.iteritems()):
-      coords = ', '.join(str(x) for x in caretList)
+    for glyph, caret_list in sorted(self.font.caret_list.iteritems()):
+      coords = ', '.join(str(x) for x in caret_list)
       data += '%s(%s) & %s & %s \\\\\n' % (
           TexGlyph(self.font.GetGlyph(glyph)), TexEscape(glyph),
-          coords, '-' )
+          coords, '-')
     return data
 
 
@@ -370,16 +375,19 @@ class SubstitutionsReport(Report):
     data = ''
     for table, features, src, dest in self.GetTableItems():
       sequence = ' '.join('%s(%s)' % (
-          TexGlyph(self.font.GetGlyph(x)), TexEscape(x)) for x in src)
+          TexGlyph(self.font.GetGlyph(x)),
+          TexEscape(x)) for x in src)
       alternates = ', '.join(' '.join('%s(%s)' % (
-          TexGlyph(self.font.GetGlyph(x)), TexEscape(x)) for x in y) for y in dest)
+          TexGlyph(self.font.GetGlyph(x)),
+          TexEscape(x)) for x in y) for y in dest)
       data += '%d & %s & %s$\\rightarrow$%s \\\\\n' % (
           table, ', '.join(features), sequence, alternates)
     return data
 
   def GetTableItems(self):
     features_mapping = self.font.GetFeaturesByTable()
-    for src, dest, table, kind in sorted(self.font.substitutes, key=lambda x:(x[2], x[0])):
+    for src, dest, table, unused_kind in sorted(
+        self.font.substitutes, key=lambda x: (x[2], x[0])):
       if table in features_mapping:
         features = sorted(set(k for k, v in features_mapping[table]))
       else:
@@ -423,7 +431,9 @@ class FeaturesReport(Report):
       'onum': 'Oldstyle Figures',
       'pnum': 'Proportional Figures',
       'pwid': 'Proportional Width',
+      'rtla': 'Right-to-left alternates',
       'rlig': 'Required Ligatures',
+      'rtlm': 'Right-toleft mirrored forms',
       'salt': 'Stylistic Alternates',
       'sinf': 'Scientific Inferiors',
       'smcp': 'Small Capitals',
@@ -480,7 +490,7 @@ class SummaryReport(Report):
     glyphs = self.font.glyphs
     count = {2: 0, 3: 0, 4: 0}
     for x in glyphs:
-      count[x.classDef] = count.get(x.classDef, 0) + 1
+      count[x.class_def] = count.get(x.class_def, 0) + 1
     return (('Unicode characters', len(self.font.chars)),
             ('Glyphs', len(glyphs)),
             ('Ligature glyphs', count[2]),
