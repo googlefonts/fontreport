@@ -582,7 +582,8 @@ def TexEscape(name):
   return re.sub(r'([_#&{}\[\]])', r'\\\1', name)
 
 
-def main(argv):
+def main():
+  argv = sys.argv
   if len(argv) == 3:
     infile = argv[1]
     outfile = argv[2]
@@ -616,4 +617,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-  main(sys.argv)
+  main()
