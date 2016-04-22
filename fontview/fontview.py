@@ -26,10 +26,13 @@ the glyphs supported by the font.
 
 """
 import os
+import random
 import re
 import subprocess
 import sys
 import unicodedata
+
+import json
 
 from fontTools.ttLib import TTFont
 
@@ -158,7 +161,7 @@ class FontFile(object):
             self.substitutes.add(((k,), ((v,),), idx, 1))
         elif sub.LookupType == 2:
           for k, v in sub.mapping.iteritems():
-            self.substitutes.add(((k,), (tuple(v),), idx, 1))
+            self.substitutes.add(((k,), (tuple(v),), idx, 2))
         elif sub.LookupType == 3:
           for k, v in sub.alternates.iteritems():
             self.substitutes.add(((k,), tuple((x,) for x in v), idx, 3))
@@ -208,8 +211,8 @@ class FontFile(object):
   def GetNames(self):
     return ['%d: %s' % (k, v) for k, v in sorted(self._names.iteritems())]
 
-  def GetGlyph(self, name):
-    return self._glyphsmap[name]
+  def GetGlyph(self, name, default=None):
+    return self._glyphsmap.get(name, default)
 
 
 class Report(object):
@@ -358,9 +361,143 @@ class LigaturesReport(Report):
           coords, '-')
     return data
 
+class GridReport(Report):
+  """Report glyphs in a grid."""
+  TETEX_HEADER = r'''
+    \newcommand\gl[1]{\tiny{#1}}
+    \newcommand\glyph[3]{\Large\customfont{\textcolor{gray}{#1}}{\textcolor{blue}{#2}}{\textcolor{gray}{{#3}}}}
+    \begin{longtable}[l]{|c|c|c|c|c|c|c|c|}
+    \hline
+    \endhead
+    \hline
+    \endfoot
+  '''
+  TETEX_FOOTER = r'\end{longtable}'
+  VARIANT_COLOR = 'yellow'
+  ROW_LENGTH = 8
+
+  NAME = 'Characters'
+
+  def Plaintext(self):
+    data = ''
+    return data
+
+  def GetVariantsMap(self):
+    features_mapping = self.font.GetFeaturesByTable()
+    alt_map = {}
+    prefixes = []
+    suffixes = []
+    for src, dest, table, kind in self.font.substitutes:
+      if kind == 1 or kind == 3:
+        glyph = self.font.GetGlyph(src[0])
+        if glyph.chars:
+          key = glyph.chars[0]
+          if not key in alt_map:
+            alt_map[key] = []
+          if table in features_mapping:
+            label = (x[0] for x in features_mapping[table]).next()
+          else:
+            label = 'var'
+          for g in dest[0]:
+            alt_map[key].append((g, label))
+            if label in ('medi', 'fina'):
+              prefixes.append(g)
+            if label in ('medi', 'init'):
+              suffixes.append(g)
+    return (alt_map, prefixes, suffixes)
+
+  def XetexBody(self):
+
+    def Cell(text, color=None):
+      return '\cellcolor{%s!10}{%s}' % (color, text) if color else text
+
+    alt_map, prefixes, suffixes = self.GetVariantsMap()
+    mapped = set()
+    scripts = {}
+    unimap = {}
+    grid_data = []
+    for code, glyph in sorted(self.font.chars.iteritems()):
+      char = unichr(code)
+      name = unicodedata.name(char, '').lower()
+      category = unicodedata.category(char)
+      prefix, suffix = None, None
+      if category[0] == 'L':
+        # Python unicodedata package does not contain script
+        # data for characters. Use a hack for a proof-of-concept now.
+        # TODO: Use unicode script data if script-based candidates
+        # selection is proven to be useful.
+        script = name.split()[0]
+        if script not in scripts:
+          scripts[script] = []
+        scripts[script].append(code)
+        unimap[code] = (script, category)
+      if unicodedata.bidirectional(char) == 'AL':
+        m = re.search(r'(isol|fina|medi|init)[a-z]* form', name)
+        label = m.group(1) if m else 'isol'
+      else:
+        label = None
+      grid_data.append(('u%04X' % code, code, glyph, label))
+      mapped.add(glyph)
+      for item in sorted(alt_map.get(code, ()), key=lambda x:x[1]):
+        glyph, label = item
+        if glyph not in mapped:
+          mapped.add(glyph)
+          grid_data.append(('u%04X, %s' % (code, TexEscape(label)), code, glyph, label))
+    for glyph in self.font.glyphs:
+      if glyph.name not in mapped:
+        grid_data.append((TexEscape(glyph.name[:10]), None, glyph.name, None))
+
+    ngrams = []
+    with open(os.path.join(os.path.dirname(__file__), 'ngram.json')) as f:
+      for item in json.load(f):
+        if all(ord(x) in unimap for x in item):
+          ngrams.append(item)
+
+    col = 0
+    data = ''
+    labels, glyphs = [], []
+    for label, code, glyph, other in grid_data:
+      suffix, prefix = None, None
+      if code and code in unimap:
+        script, category = unimap[code]
+        # TODO: get rid of ad hoc arabic handling
+        if script != 'arabic':
+          match = sorted((x for x in ngrams if x[0] == unichr(code)),
+                         key=lambda k: tuple(x.isalpha() for x in k),
+                         reverse=True)
+          if match:
+            prefix = self.font.chars[ord(match[0][1])]
+            suffix = self.font.chars[ord(match[0][2])]
+          else:
+            candidates = scripts[script]
+            prefix = self.font.chars[random.choice(scripts[script])]
+            suffix = self.font.chars[random.choice(scripts[script])]
+      color = self.VARIANT_COLOR if ',' in label else None
+      labels.append(Cell('\\gl{%s}' % label, color))
+      if not prefix and other not in ('fina', 'isol') and prefixes:
+        prefix = random.choice(prefixes)
+      if not suffix and other not in ('init', 'isol') and suffixes:
+        suffix = random.choice(suffixes)
+      if code and not other:
+        content = r'\symbol{%s}' % code
+      else:
+        content = r'{\XeTeXglyph %d}' % self.font.GetGlyph(glyph).index
+      formatted = '{\\glyph{%s}{%s}{%s}}' % (
+          (r'{\XeTeXglyph %d}' % self.font.GetGlyph(prefix).index) if prefix else '',
+          content,
+          (r'{\XeTeXglyph %d}' % self.font.GetGlyph(suffix).index) if suffix else ''
+      )
+      glyphs.append(Cell(formatted, color))
+      col = (col + 1) % self.ROW_LENGTH
+      if not col:
+        data += ' & '.join(glyphs) + '\\\\\n'
+        data += ' & '.join(labels) + '\\\\\n\\hline\n'
+        labels, glyphs = [], []
+    return data
+
 
 class SubstitutionsReport(Report):
-  """Report GPOS substitutions."""
+  """Report GSUB substitutions."""
   TETEX_HEADER = r'''
     \begin{longtable}[l]{|c|c|p{.7\textwidth}|}
     \hline
@@ -373,7 +510,7 @@ class SubstitutionsReport(Report):
   '''
   TETEX_FOOTER = r'\end{longtable}'
 
-  NAME = 'GPOS Substitutions'
+  NAME = 'GSUB Substitutions'
 
   def Plaintext(self):
     data = ''
@@ -539,10 +676,11 @@ class Envelope(Report):
   TETEX_FOOTER = r'\end{document}'
 
   FONT_TEMPLATE = r'''
-    \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
+    \newfontface\customfont[Path = %s/]{%s}
   '''
+  #  \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
 
-  KNOWN_REPORTS = (SummaryReport, UnicodeCoverageReport,
+  KNOWN_REPORTS = (SummaryReport, GridReport, UnicodeCoverageReport,
                    GlyphsReport, FeaturesReport,
                    LigaturesReport, SubstitutionsReport)
 
@@ -553,7 +691,7 @@ class Envelope(Report):
         content = report(self.font).Plaintext()
         if content:
           data += report.NAME.upper() + '\n' + content + '\n\n'
-      except AttributeError:
+      except AttributeError as e:
         pass
     return data
 
@@ -569,7 +707,8 @@ class Envelope(Report):
         content = report(self.font).Xetex()
         if content:
           data += '\\section{%s}\n%s\n' % (report.NAME, content)
-      except AttributeError:
+      except ValueError as e:
+        print e
         pass
     return data
 
