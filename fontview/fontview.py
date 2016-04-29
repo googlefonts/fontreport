@@ -259,7 +259,7 @@ class UnicodeCoverageReport(Report):
         uniname = unicodedata.name(unichr(code))
       except ValueError:
         uniname = ''
-      data += '  U+%04d %-30s %s\n' % (code, name, uniname)
+      data += '  U+%04X %-30s %s\n' % (code, name, uniname)
     return data
 
   def XetexBody(self):
