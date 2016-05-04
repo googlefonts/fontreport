@@ -17,13 +17,13 @@ from setuptools import setup
 
 
 setup(
-    name='fontview',
+    name='fontreport',
     version='1.0',
-    packages=['fontview'],
-    package_data = {'fontview': ['*.json']},
+    packages=['fontreport'],
+    package_data = {'fontreport': ['*.json']},
     entry_points = {
         'console_scripts': [
-            'fontview = fontview.fontview:main'
+            'fontreport = fontreport.fontreport:main'
         ],
     },
     install_requires=[
