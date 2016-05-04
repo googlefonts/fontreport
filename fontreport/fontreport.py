@@ -32,6 +32,7 @@ import subprocess
 import sys
 import unicodedata
 
+import ngram
 import json
 
 from fontTools.ttLib import TTFont
@@ -448,10 +449,9 @@ class GridReport(Report):
         grid_data.append((TexEscape(glyph.name[:10]), None, glyph.name, None))
 
     ngrams = []
-    with open(os.path.join(os.path.dirname(__file__), 'ngram.json')) as f:
-      for item in json.load(f):
-        if all(ord(x) in unimap for x in item):
-          ngrams.append(item)
+    for item in json.loads(ngram.NGRAMS):
+      if all(ord(x) in unimap for x in item):
+        ngrams.append(item)
 
     col = 0
     data = ''

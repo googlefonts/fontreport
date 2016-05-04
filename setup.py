@@ -20,7 +20,6 @@ setup(
     name='fontreport',
     version='1.0',
     packages=['fontreport'],
-    package_data = {'fontreport': ['*.json']},
     entry_points = {
         'console_scripts': [
             'fontreport = fontreport.fontreport:main'
