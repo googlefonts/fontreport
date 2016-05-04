@@ -20,6 +20,7 @@ setup(
     name='fontview',
     version='1.0',
     packages=['fontview'],
+    package_data = {'fontview': ['*.json']},
     entry_points = {
         'console_scripts': [
             'fontview = fontview.fontview:main'
