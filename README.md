@@ -9,7 +9,7 @@ following installation instructions for your platform.
 
 ### Ubuntu
 
-apt-get install texlive-latex-recommended
+apt-get install python-setuptool texlive-xetex texlive-latex-recommended
 
 ### Other
 
