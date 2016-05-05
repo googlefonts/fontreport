@@ -733,7 +733,7 @@ def main():
     print 'Usage: %s infile [outfile]' % argv[0]
     sys.exit(-1)
 
-  font = FontFile(infile)
+  font = FontFile(os.path.abspath(infile))
   envelope = Envelope(font)
   if outfile:
     name, ext = os.path.splitext(outfile)
