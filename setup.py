@@ -26,6 +26,6 @@ setup(
         ],
     },
     install_requires=[
-        'FontTools',
+        'fonttools>=3.0',
     ]
 )
