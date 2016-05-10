@@ -28,5 +28,8 @@ setup(
     },
     install_requires=[
         'fonttools>=3.0',
+    ],
+    dependency_links=[
+        'https://github.com/behdad/fonttools/tarball/master#egg=fonttools-3.0'
     ]
 )
