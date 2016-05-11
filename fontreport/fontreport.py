@@ -33,7 +33,6 @@ import sys
 import unicodedata
 
 import ngram
-import json
 
 from fontTools.ttLib import TTFont
 
@@ -408,7 +407,6 @@ class GridReport(Report):
     return (alt_map, prefixes, suffixes)
 
   def XetexBody(self):
-
     def Cell(text, color=None):
       return '\cellcolor{%s!10}{%s}' % (color, text) if color else text
 
@@ -448,11 +446,11 @@ class GridReport(Report):
       if glyph.name not in mapped:
         grid_data.append((TexEscape(glyph.name[:10]), None, glyph.name, None))
 
+    print 'X'
     ngrams = []
-    for item in json.loads(ngram.NGRAMS):
+    for item in ngram.NGRAMS:
       if all(ord(x) in unimap for x in item):
         ngrams.append(item)
-
     col = 0
     data = ''
     labels, glyphs = [], []
@@ -493,6 +491,7 @@ class GridReport(Report):
         data += ' & '.join(glyphs) + '\\\\\n'
         data += ' & '.join(labels) + '\\\\\n\\hline\n'
         labels, glyphs = [], []
+    print 'Y'
     return data
 
 
