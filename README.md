@@ -43,11 +43,15 @@ See http://www.tug.org/texlive/
     for file in *.ttf; do fontreport "$file" | grep U+XXXX > temp.txt && echo $file && cat temp.txt; done > summary.txt
 
 ### Find language-specific substitutions defined in a font
-fontreport NotoKufiArabic-Regular.ttf | grep locl
-locl  Localized Forms arab-URD  1
-   1  locl                  uni0667 -> uni06F7.urdu
-   1  locl                  uni06F4 -> uni06F4.urdu
-   1  locl                  uni06F6 -> uni0666
+
+    fontreport NotoKufiArabic-Regular.ttf | grep locl
+
+The output is:
+
+    locl  Localized Forms arab-URD  1
+       1  locl                  uni0667 -> uni06F7.urdu
+       1  locl                  uni06F4 -> uni06F4.urdu
+       1  locl                  uni06F6 -> uni0666
 
 
 ## Report Content
