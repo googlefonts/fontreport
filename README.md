@@ -38,15 +38,9 @@ See http://www.tug.org/texlive/
 
     fontreport NotoSansMalayalam-Regular.ttf Malayalam.txt
 
-### Generate a plain-text report
+### Find out if a given Unicode character is included in what fonts in a directory
 
-    fontreport NotoSansMalayalam-Regular.ttf Malayalam.txt
-
-### Find out if a given Unicode character is included in what fonts in a
-directory
-
-    for file in *.ttf; do fontreport "$file" | grep U+XXXX > temp.txt && echo
-$file && cat temp.txt; done > summary.txt
+    for file in *.ttf; do fontreport "$file" | grep U+XXXX > temp.txt && echo $file && cat temp.txt; done > summary.txt
 
 ### Find language-specific substitutions defined in a font
 fontreport NotoKufiArabic-Regular.ttf | grep locl
