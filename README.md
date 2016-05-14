@@ -40,7 +40,7 @@ Resulting report: [malayalam.pdf](./examples/malayalam.pdf)
 
     fontreport NotoSansMalayalam-Regular.ttf Malayalam.txt
 
-Resulting report: [malayalam.pdf](./examples/malayalam.pdf)
+Resulting report: [malayalam.txt](./examples/malayalam.txt)
 
 ### Find out if a given Unicode character is included in what fonts in a directory
 
