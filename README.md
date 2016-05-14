@@ -34,9 +34,13 @@ See http://www.tug.org/texlive/
 
     fontreport NotoSansMalayalam-Regular.ttf Malayalam.pdf
 
+Resulting report: [malayalam.pdf](./examples/malayalam.pdf)
+
 ### Generate a plain-text report
 
     fontreport NotoSansMalayalam-Regular.ttf Malayalam.txt
+
+Resulting report: [malayalam.pdf](./examples/malayalam.pdf)
 
 ### Find out if a given Unicode character is included in what fonts in a directory
 

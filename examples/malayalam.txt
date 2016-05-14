@@ -1,0 +1,1054 @@
+SUMMARY
+  Unicode characters: 161
+              Glyphs: 318
+     Ligature glyphs: 147
+         Mark glyphs: 7
+    Component glyphs: 0
+
+UNICODE COVERAGE
+  U+0000 uni0000                        
+  U+000D uni000D                        
+  U+0020 space                          SPACE
+  U+0021 exclam                         EXCLAMATION MARK
+  U+0022 quotedbl                       QUOTATION MARK
+  U+0023 numbersign                     NUMBER SIGN
+  U+0025 percent                        PERCENT SIGN
+  U+0027 quotesingle                    APOSTROPHE
+  U+0028 parenleft                      LEFT PARENTHESIS
+  U+0029 parenright                     RIGHT PARENTHESIS
+  U+002A asterisk                       ASTERISK
+  U+002B plus                           PLUS SIGN
+  U+002C comma                          COMMA
+  U+002D hyphen                         HYPHEN-MINUS
+  U+002E period                         FULL STOP
+  U+002F slash                          SOLIDUS
+  U+0030 zero                           DIGIT ZERO
+  U+0031 one                            DIGIT ONE
+  U+0032 two                            DIGIT TWO
+  U+0033 three                          DIGIT THREE
+  U+0034 four                           DIGIT FOUR
+  U+0035 five                           DIGIT FIVE
+  U+0036 six                            DIGIT SIX
+  U+0037 seven                          DIGIT SEVEN
+  U+0038 eight                          DIGIT EIGHT
+  U+0039 nine                           DIGIT NINE
+  U+003A colon                          COLON
+  U+003B semicolon                      SEMICOLON
+  U+003C less                           LESS-THAN SIGN
+  U+003D equal                          EQUALS SIGN
+  U+003E greater                        GREATER-THAN SIGN
+  U+003F question                       QUESTION MARK
+  U+005B bracketleft                    LEFT SQUARE BRACKET
+  U+005C backslash                      REVERSE SOLIDUS
+  U+005D bracketright                   RIGHT SQUARE BRACKET
+  U+005E asciicircum                    CIRCUMFLEX ACCENT
+  U+005F underscore                     LOW LINE
+  U+007B braceleft                      LEFT CURLY BRACKET
+  U+007C bar                            VERTICAL LINE
+  U+007D braceright                     RIGHT CURLY BRACKET
+  U+007E asciitilde                     TILDE
+  U+00A0 space                          NO-BREAK SPACE
+  U+00AD uni00AD                        SOFT HYPHEN
+  U+00D7 multiply                       MULTIPLICATION SIGN
+  U+00F7 divide                         DIVISION SIGN
+  U+0307 uni0307                        COMBINING DOT ABOVE
+  U+0323 dotbelowcomb                   COMBINING DOT BELOW
+  U+0964 uni0964                        DEVANAGARI DANDA
+  U+0965 uni0965                        DEVANAGARI DOUBLE DANDA
+  U+0D02 uni0D02                        MALAYALAM SIGN ANUSVARA
+  U+0D03 uni0D03                        MALAYALAM SIGN VISARGA
+  U+0D05 uni0D05                        MALAYALAM LETTER A
+  U+0D06 uni0D06                        MALAYALAM LETTER AA
+  U+0D07 uni0D07                        MALAYALAM LETTER I
+  U+0D08 uni0D08                        MALAYALAM LETTER II
+  U+0D09 uni0D09                        MALAYALAM LETTER U
+  U+0D0A uni0D0A                        MALAYALAM LETTER UU
+  U+0D0B uni0D0B                        MALAYALAM LETTER VOCALIC R
+  U+0D0C uni0D0C                        MALAYALAM LETTER VOCALIC L
+  U+0D0E uni0D0E                        MALAYALAM LETTER E
+  U+0D0F uni0D0F                        MALAYALAM LETTER EE
+  U+0D10 uni0D10                        MALAYALAM LETTER AI
+  U+0D12 uni0D12                        MALAYALAM LETTER O
+  U+0D13 uni0D13                        MALAYALAM LETTER OO
+  U+0D14 uni0D14                        MALAYALAM LETTER AU
+  U+0D15 uni0D15                        MALAYALAM LETTER KA
+  U+0D16 uni0D16                        MALAYALAM LETTER KHA
+  U+0D17 uni0D17                        MALAYALAM LETTER GA
+  U+0D18 uni0D18                        MALAYALAM LETTER GHA
+  U+0D19 uni0D19                        MALAYALAM LETTER NGA
+  U+0D1A uni0D1A                        MALAYALAM LETTER CA
+  U+0D1B uni0D1B                        MALAYALAM LETTER CHA
+  U+0D1C uni0D1C                        MALAYALAM LETTER JA
+  U+0D1D uni0D1D                        MALAYALAM LETTER JHA
+  U+0D1E uni0D1E                        MALAYALAM LETTER NYA
+  U+0D1F uni0D1F                        MALAYALAM LETTER TTA
+  U+0D20 uni0D20                        MALAYALAM LETTER TTHA
+  U+0D21 uni0D21                        MALAYALAM LETTER DDA
+  U+0D22 uni0D22                        MALAYALAM LETTER DDHA
+  U+0D23 uni0D23                        MALAYALAM LETTER NNA
+  U+0D24 uni0D24                        MALAYALAM LETTER TA
+  U+0D25 uni0D25                        MALAYALAM LETTER THA
+  U+0D26 uni0D26                        MALAYALAM LETTER DA
+  U+0D27 uni0D27                        MALAYALAM LETTER DHA
+  U+0D28 uni0D28                        MALAYALAM LETTER NA
+  U+0D29 uni0D29                        
+  U+0D2A uni0D2A                        MALAYALAM LETTER PA
+  U+0D2B uni0D2B                        MALAYALAM LETTER PHA
+  U+0D2C uni0D2C                        MALAYALAM LETTER BA
+  U+0D2D uni0D2D                        MALAYALAM LETTER BHA
+  U+0D2E uni0D2E                        MALAYALAM LETTER MA
+  U+0D2F uni0D2F                        MALAYALAM LETTER YA
+  U+0D30 uni0D30                        MALAYALAM LETTER RA
+  U+0D31 uni0D31                        MALAYALAM LETTER RRA
+  U+0D32 uni0D32                        MALAYALAM LETTER LA
+  U+0D33 uni0D33                        MALAYALAM LETTER LLA
+  U+0D34 uni0D34                        MALAYALAM LETTER LLLA
+  U+0D35 uni0D35                        MALAYALAM LETTER VA
+  U+0D36 uni0D36                        MALAYALAM LETTER SHA
+  U+0D37 uni0D37                        MALAYALAM LETTER SSA
+  U+0D38 uni0D38                        MALAYALAM LETTER SA
+  U+0D39 uni0D39                        MALAYALAM LETTER HA
+  U+0D3A uni0D3A                        
+  U+0D3D uni0D3D                        MALAYALAM SIGN AVAGRAHA
+  U+0D3E uni0D3E                        MALAYALAM VOWEL SIGN AA
+  U+0D3F uni0D3F                        MALAYALAM VOWEL SIGN I
+  U+0D40 uni0D40                        MALAYALAM VOWEL SIGN II
+  U+0D41 uni0D41                        MALAYALAM VOWEL SIGN U
+  U+0D42 uni0D42                        MALAYALAM VOWEL SIGN UU
+  U+0D43 uni0D43                        MALAYALAM VOWEL SIGN VOCALIC R
+  U+0D44 uni0D44                        MALAYALAM VOWEL SIGN VOCALIC RR
+  U+0D46 uni0D46                        MALAYALAM VOWEL SIGN E
+  U+0D47 uni0D47                        MALAYALAM VOWEL SIGN EE
+  U+0D48 uni0D48                        MALAYALAM VOWEL SIGN AI
+  U+0D4A uni0D4A                        MALAYALAM VOWEL SIGN O
+  U+0D4B uni0D4B                        MALAYALAM VOWEL SIGN OO
+  U+0D4C uni0D4C                        MALAYALAM VOWEL SIGN AU
+  U+0D4D uni0D4D                        MALAYALAM SIGN VIRAMA
+  U+0D4E uni0D4E                        
+  U+0D57 uni0D57                        MALAYALAM AU LENGTH MARK
+  U+0D60 uni0D60                        MALAYALAM LETTER VOCALIC RR
+  U+0D61 uni0D61                        MALAYALAM LETTER VOCALIC LL
+  U+0D62 uni0D62                        MALAYALAM VOWEL SIGN VOCALIC L
+  U+0D63 uni0D63                        MALAYALAM VOWEL SIGN VOCALIC LL
+  U+0D66 uni0D66                        MALAYALAM DIGIT ZERO
+  U+0D67 uni0D67                        MALAYALAM DIGIT ONE
+  U+0D68 uni0D68                        MALAYALAM DIGIT TWO
+  U+0D69 uni0D69                        MALAYALAM DIGIT THREE
+  U+0D6A uni0D6A                        MALAYALAM DIGIT FOUR
+  U+0D6B uni0D6B                        MALAYALAM DIGIT FIVE
+  U+0D6C uni0D6C                        MALAYALAM DIGIT SIX
+  U+0D6D uni0D6D                        MALAYALAM DIGIT SEVEN
+  U+0D6E uni0D6E                        MALAYALAM DIGIT EIGHT
+  U+0D6F uni0D6F                        MALAYALAM DIGIT NINE
+  U+0D70 uni0D70                        MALAYALAM NUMBER TEN
+  U+0D71 uni0D71                        MALAYALAM NUMBER ONE HUNDRED
+  U+0D72 uni0D72                        MALAYALAM NUMBER ONE THOUSAND
+  U+0D73 uni0D73                        MALAYALAM FRACTION ONE QUARTER
+  U+0D74 uni0D74                        MALAYALAM FRACTION ONE HALF
+  U+0D75 uni0D75                        MALAYALAM FRACTION THREE QUARTERS
+  U+0D79 uni0D79                        MALAYALAM DATE MARK
+  U+0D7A uni0D7A                        MALAYALAM LETTER CHILLU NN
+  U+0D7B uni0D7B                        MALAYALAM LETTER CHILLU N
+  U+0D7C uni0D7C                        MALAYALAM LETTER CHILLU RR
+  U+0D7D uni0D7D                        MALAYALAM LETTER CHILLU L
+  U+0D7E uni0D7E                        MALAYALAM LETTER CHILLU LL
+  U+0D7F uni0D7F                        MALAYALAM LETTER CHILLU K
+  U+200B uni200B                        ZERO WIDTH SPACE
+  U+200C uni200C                        ZERO WIDTH NON-JOINER
+  U+200D uni200D                        ZERO WIDTH JOINER
+  U+2013 endash                         EN DASH
+  U+2014 emdash                         EM DASH
+  U+2018 quoteleft                      LEFT SINGLE QUOTATION MARK
+  U+2019 quoteright                     RIGHT SINGLE QUOTATION MARK
+  U+201C quotedblleft                   LEFT DOUBLE QUOTATION MARK
+  U+201D quotedblright                  RIGHT DOUBLE QUOTATION MARK
+  U+2026 ellipsis                       HORIZONTAL ELLIPSIS
+  U+20B9 uni20B9                        
+  U+2212 minus                          MINUS SIGN
+  U+25CC uni25CC                        DOTTED CIRCLE
+  U+FEFF uni200B                        ZERO WIDTH NO-BREAK SPACE
+
+
+GLYPHS
+     0 .notdef                          1229    193   0
+     1 uni0000                             0      0   0
+     2 uni000D                           632      0   0
+     3 space                             632      0   0
+     4 uni0D02                           927     65   1
+     5 uni0D03                           689     67   1
+     6 uni0D05                          3058     80   1
+     7 uni0D06                          3372     80   1
+     8 uni0D07                          2019     81   1
+     9 uni0D08                          3574     81   1
+    10 uni0D09                          1417     81   1
+    11 uni0D0A                          2972     81   1
+    12 uni0D0B                          1784     75   1
+    13 uni0D0C                          2389     85   1
+    14 uni0D0E                          2608     65   1
+    15 uni0D0F                          2605     65   1
+    16 uni0D10                          4073     76   1
+    17 uni0D12                          1524     80   1
+    18 uni0D13                          2557     80   1
+    19 uni0D14                          3073     80   1
+    20 uni0D15                          2125     65   1
+    21 uni0D16                          2047     80   1
+    22 uni0D17                          1837     80   1
+    23 uni0D18                          2714     65   1
+    24 uni0D19                          2175     85   1
+    25 uni0D1A                          1911     35   1
+    26 uni0D1B                          2762     35   1
+    27 uni0D1C                          1923     75   1
+    28 uni0D1D                          3389     80   1
+    29 uni0D1E                          2961     85   1
+    30 uni0D1F                          1152     41   1
+    31 uni0D20                          1342     80   1
+    32 uni0D21                          2505     80   1
+    33 uni0D22                          2732     80   1
+    34 uni0D23                          2802     85   1
+    35 uni0D24                          2077     80   1
+    36 uni0D25                          1835    145   1
+    37 uni0D26                          1310    110   1
+    38 uni0D27                          1865     80   1
+    39 uni0D28                          1865     80   1
+    40 uni0D29                          2092     85   1
+    41 uni0D2A                          1835     65   1
+    42 uni0D2B                          2312     65   1
+    43 uni0D2C                          2674     85   1
+    44 uni0D2D                          1343    110   1
+    45 uni0D2E                          1485    125   1
+    46 uni0D2F                          2120     80   1
+    47 uni0D30                          1507     80   1
+    48 uni0D31                          1381     80   1
+    49 uni0D32                          1759    130   1
+    50 uni0D33                          1466     81   1
+    51 uni0D34                          1340     75   1
+    52 uni0D35                          1963     80   1
+    53 uni0D36                          2130     80   1
+    54 uni0D37                          2354     65   1
+    55 uni0D38                          2505     80   1
+    56 uni0D39                          2437     65   1
+    57 uni0D3A                          1584     44   1
+    58 uni0D3D                           954   -179   1
+    59 uni0D3E                          1033     34   1
+    60 uni0D3F                           467   -432   1
+    61 uni0D40                           467   -588   1
+    62 uni0D41                           679    -53   1
+    63 uni0D42                           679    -53   1
+    64 uni0D43                           497   -295   1
+    65 uni0D44                           497   -541   1
+    66 uni0D46                          1465     80   1
+    67 uni0D47                          1219     80   1
+    68 uni0D48                          2935     80   1
+    69 uni0D4A                          2923     80   1
+    70 uni0D4B                          2647     80   1
+    71 uni0D4C                          3449     80   1
+    72 uni0D4D                             0   -598   3
+    73 uni0D4E                             0    777   3
+    74 uni0D57                          1555     73   1
+    75 uni0D60                          1784     75   1
+    76 uni0D61                          2704     85   1
+    77 uni0D62                             0  -1655   3
+    78 uni0D63                             0  -1655   3
+    79 uni0D66                          1179     80   0
+    80 uni0D67                          1835     23   0
+    81 uni0D68                          1759     80   0
+    82 uni0D69                          2219     80   0
+    83 uni0D6A                          1632     80   0
+    84 uni0D6B                          1989     90   0
+    85 uni0D6C                          2505     80   0
+    86 uni0D6D                          1522     80   0
+    87 uni0D6E                          1963     80   0
+    88 uni0D6F                          2298     80   0
+    89 uni0D70                          2221    -71   0
+    90 uni0D71                          1825     80   0
+    91 uni0D72                          2889     80   0
+    92 uni0D73                          1606     80   0
+    93 uni0D74                          1885     80   0
+    94 uni0D75                          2525     85   0
+    95 uni0D79                          2349     80   0
+    96 uni0D7A                          3110     85   1
+    97 uni0D7B                          2173     80   1
+    98 uni0D7C                          1507     80   1
+    99 uni0D7D                          2454     80   1
+   100 uni0D7E                          2139     80   1
+   101 uni0D7F                          2470     65   1
+   102 uni200B                             0      0   0
+   103 uni200C                             0    -54   0
+   104 uni200D                             0   -299   0
+   105 uni25CC                          1184    145   1
+   106 glyph00106                       2125     65   2
+   107 glyph00107                       2047     80   2
+   108 glyph00108                       1837     80   2
+   109 glyph00109                       2714     65   2
+   110 glyph00110                       2175     85   2
+   111 glyph00111                       1911     35   2
+   112 glyph00112                       2762     35   2
+   113 glyph00113                       1923     75   2
+   114 glyph00114                       3389     80   2
+   115 glyph00115                       2961     85   2
+   116 glyph00116                       1152     41   2
+   117 glyph00117                       1342     80   2
+   118 glyph00118                       2505     80   2
+   119 glyph00119                       2732     80   2
+   120 glyph00120                       2802     85   2
+   121 glyph00121                       2077     80   2
+   122 glyph00122                       1835    145   2
+   123 glyph00123                       1310    110   2
+   124 glyph00124                       1865     80   2
+   125 glyph00125                       1865     80   2
+   126 glyph00126                       1835     65   2
+   127 glyph00127                       2312     65   2
+   128 glyph00128                       2674     85   2
+   129 glyph00129                       1343    110   2
+   130 glyph00130                       1485    125   2
+   131 glyph00131                       2120     80   2
+   132 glyph00132                       1507     80   2
+   133 glyph00133                       1381     80   2
+   134 glyph00134                       1759    130   2
+   135 glyph00135                       1466     81   2
+   136 glyph00136                       1340     75   2
+   137 glyph00137                       1963     80   2
+   138 glyph00138                       2130     80   2
+   139 glyph00139                       2354     65   2
+   140 glyph00140                       2505     80   2
+   141 glyph00141                       2437     65   2
+   142 glyph00142                       3474     65   2
+   143 glyph00143                          0  -1449   3
+   144 glyph00144                        497   -295   2
+   145 glyph00145                        467   -379   2
+   146 glyph00146                        499     90   2
+   147 glyph00147                       3085     65   2
+   148 glyph00148                       3707     65   2
+   149 glyph00149                       2125     65   2
+   150 glyph00150                       2125     65   2
+   151 glyph00151                       3474     65   2
+   152 glyph00152                       1837     80   2
+   153 glyph00153                       1907     80   2
+   154 glyph00154                       2876     80   2
+   155 glyph00155                       2537     80   2
+   156 glyph00156                       1837     80   2
+   157 glyph00157                       2169     74   2
+   158 glyph00158                       3128     80   2
+   159 glyph00159                       1911     35   2
+   160 glyph00160                       1911     35   2
+   161 glyph00161                       3881     75   2
+   162 glyph00162                       4858     75   2
+   163 glyph00163                       3352     85   2
+   164 glyph00164                       4387     85   2
+   165 glyph00165                       3381     85   2
+   166 glyph00166                       4488     85   2
+   167 glyph00167                       1152     41   2
+   168 glyph00168                       2505     80   2
+   169 glyph00169                       2505     80   2
+   170 glyph00170                       4119     85   2
+   171 glyph00171                       4336     85   2
+   172 glyph00172                       3141     85   2
+   173 glyph00173                       2802     85   2
+   174 glyph00174                       2995     85   2
+   175 glyph00175                       2734     80   2
+   176 glyph00176                       2910     80   2
+   177 glyph00177                       3073     80   2
+   178 glyph00178                       3374     80   2
+   179 glyph00179                       3603     80   2
+   180 glyph00180                       3603     80   2
+   181 glyph00181                       3448     80   2
+   182 glyph00182                       2077     80   2
+   183 glyph00183                       1310    110   2
+   184 glyph00184                       2428    110   2
+   185 glyph00185                       1948     80   2
+   186 glyph00186                       3177     80   2
+   187 glyph00187                       2575     80   2
+   188 glyph00188                       2204     80   2
+   189 glyph00189                       2173     80   2
+   190 glyph00190                       2734     80   2
+   191 glyph00191                       3237     80   2
+   192 glyph00192                       1836     65   2
+   193 glyph00193                       1835     65   2
+   194 glyph00194                       2312     65   2
+   195 glyph00195                       2674     85   2
+   196 glyph00196                       2674     85   2
+   197 glyph00197                       2674     85   2
+   198 glyph00198                       2674     85   2
+   199 glyph00199                       2543    125   2
+   200 glyph00200                       2447     80   2
+   201 glyph00201                       1485     68   2
+   202 glyph00202                       2120     80   2
+   203 glyph00203                       1381     80   2
+   204 glyph00204                       1759    130   2
+   205 glyph00205                       1759    130   2
+   206 glyph00206                       2906     81   2
+   207 glyph00207                       1963     80   2
+   208 glyph00208                       1963     80   2
+   209 glyph00209                       3097     80   2
+   210 glyph00210                       4132     80   2
+   211 glyph00211                       2130     80   2
+   212 glyph00212                       2130     80   2
+   213 glyph00213                       2354     65   2
+   214 glyph00214                       2505     80   2
+   215 glyph00215                       2505     80   2
+   216 glyph00216                       3872     80   2
+   217 glyph00217                       2505     80   2
+   218 glyph00218                       2535     65   2
+   219 glyph00219                       2921     65   2
+   220 glyph00220                       2437     65   2
+   221 glyph00221                        467   -398   1
+   222 glyph00222                        715   -124   1
+   223 glyph00223                        544   -370   1
+   224 glyph00224                        774   -153   1
+   225 glyph00225                        719    -13   1
+   226 glyph00226                        719    -13   1
+   227 glyph00227                        697    -45   1
+   228 glyph00228                        993    -45   1
+   229 glyph00229                        697    -45   2
+   230 glyph00230                        811    -35   2
+   231 glyph00231                        666     90   2
+   232 glyph00232                       1626     20   1
+   233 glyph00233                       1626     20   1
+   234 glyph00234                       1626     20   2
+   235 glyph00235                       1626     20   2
+   236 glyph00236                       1626     20   2
+   237 glyph00237                       1626     20   2
+   238 glyph00238                       1626     20   2
+   239 glyph00239                       1626     20   2
+   240 glyph00240                       1626     20   2
+   241 glyph00241                       1626     20   2
+   242 glyph00242                       1626     20   2
+   243 glyph00243                       1626     20   2
+   244 glyph00244                       1626     20   2
+   245 glyph00245                       1626     20   2
+   246 glyph00246                       1626     20   2
+   247 glyph00247                       1626     20   2
+   248 glyph00248                       1626     20   2
+   249 glyph00249                       1626     20   2
+   250 exclam                            551    148   0
+   251 quotedbl                          873    143   0
+   252 numbersign                       1323     51   0
+   253 percent                          1702    101   0
+   254 quotesingle                       513    143   0
+   255 parenleft                         616     82   0
+   256 parenright                        616     61   0
+   257 asterisk                         1128     82   0
+   258 plus                             1171    104   0
+   259 comma                             512     63   0
+   260 hyphen                            659     82   0
+   261 period                            549    147   0
+   262 slash                             804     40   0
+   263 zero                             1171    103   0
+   264 one                              1171    184   0
+   265 two                              1171    100   0
+   266 three                            1171     93   0
+   267 four                             1171     44   0
+   268 five                             1171    130   0
+   269 six                              1171    111   0
+   270 seven                            1171     91   0
+   271 eight                            1171    102   0
+   272 nine                             1171     99   0
+   273 colon                             549     94   0
+   274 semicolon                         549     63   0
+   275 less                             1171    103   0
+   276 equal                            1171    116   0
+   277 greater                          1171    103   0
+   278 question                          912     77   0
+   279 bracketleft                       651    164   0
+   280 backslash                         804     41   0
+   281 bracketright                      661     81   0
+   282 asciicircum                      1171     81   0
+   283 underscore                        910     -4   0
+   284 braceleft                         756     62   0
+   285 bar                              1128    390   0
+   286 braceright                        756     82   0
+   287 asciitilde                       1171    103   0
+   288 uni00AD                           659     82   0
+   289 endash                           1024     82   0
+   290 emdash                           2048     82   0
+   291 quoteleft                         458     73   0
+   292 quoteright                        458     73   0
+   293 quotedblleft                      843     73   0
+   294 quotedblright                     843     73   0
+   295 ellipsis                         1647    147   0
+   296 multiply                         1171    133   0
+   297 divide                           1171    104   0
+   298 minus                            1171    103   0
+   299 uni20B9                          1171    147   0
+   300 uni0964                           717    360   0
+   301 uni0965                          1167    360   0
+   302 uni0307                             0   -830   3
+   303 dotbelowcomb                        0   -847   3
+   304 glyph00304                       1837     80   2
+   305 glyph00305                       1837     80   2
+   306 glyph00306                       1865     80   2
+   307 glyph00307                       1865     80   2
+   308 glyph00308                       2332     80   2
+   309 glyph00309                       2332     80   2
+   310 glyph00310                       1835     65   2
+   311 glyph00311                       1835     65   2
+   312 glyph00312                       1485    125   2
+   313 glyph00313                       1485    125   2
+   314 glyph00314                       1974     80   2
+   315 glyph00315                       1974     80   2
+   316 glyph00316                       2505     80   2
+   317 glyph00317                       2505     80   2
+
+
+OPENTYPE FEATURES
+akhn	N/A	mlm2	0
+akhn	N/A	mlm2-MAL 	1
+akhn	N/A	mlym	2
+akhn	N/A	mlym-MAL 	3
+blwf	N/A	mlym, mlym-MAL 	7, 8
+half	N/A	mlym, mlym-MAL 	6
+haln	N/A	mlym, mlym-MAL 	29
+liga	Standard Ligatures	mlym, mlm2, mlm2-MAL , mlym-MAL 	28
+pref	N/A	mlm2, mlm2-MAL 	4, 5
+pstf	N/A	mlm2, mlm2-MAL 	9, 10
+pstf	N/A	mlym, mlym-MAL 	11
+psts	N/A	mlym, mlym-MAL 	12, 13, 19, 21, 23, 25, 28
+psts	N/A	mlm2, mlm2-MAL 	17, 21, 22, 25, 28
+
+
+GSUB SUBSTITUTIONS
+   0	akhn                	uni0D15 uni0D4D uni0D15 -> glyph00147
+   0	akhn                	uni0D15 uni0D4D uni0D24 -> glyph00148
+   0	akhn                	uni0D15 uni0D4D uni0D32 -> glyph00150
+   0	akhn                	uni0D15 uni0D4D uni0D37 -> glyph00151
+   0	akhn                	uni0D15 uni0D4D uni200D -> uni0D7F
+   0	akhn                	uni0D15 uni200D uni0D4D uni0D1F -> glyph00149
+   0	akhn                	uni0D17 uni0D4D uni0D17 -> glyph00152
+   0	akhn                	uni0D17 uni0D4D uni0D28 -> glyph00155
+   0	akhn                	uni0D17 uni0D4D uni0D2E -> glyph00154
+   0	akhn                	uni0D17 uni0D4D uni0D32 -> glyph00156
+   0	akhn                	uni0D17 uni200D uni0D4D uni0D26 -> glyph00153
+   0	akhn                	uni0D17 uni200D uni0D4D uni0D28 -> glyph00155
+   0	akhn                	uni0D17 uni200D uni0D4D uni0D2E -> glyph00154
+   0	akhn                	uni0D19 uni0D4D uni0D15 -> glyph00157
+   0	akhn                	uni0D19 uni0D4D uni0D19 -> glyph00158
+   0	akhn                	uni0D1A uni0D4D uni0D1A -> glyph00159
+   0	akhn                	uni0D1A uni0D4D uni0D1B -> glyph00160
+   0	akhn                	uni0D1C uni0D4D uni0D1C -> glyph00161
+   0	akhn                	uni0D1C uni0D4D uni0D1E -> glyph00162
+   0	akhn                	uni0D1E uni0D4D uni0D1A -> glyph00163
+   0	akhn                	uni0D1E uni0D4D uni0D1C -> glyph00165
+   0	akhn                	uni0D1E uni0D4D uni0D1E -> glyph00166
+   0	akhn                	uni0D1E uni200D uni0D4D uni0D1B -> glyph00164
+   0	akhn                	uni0D1F uni0D4D uni0D1F -> glyph00167
+   0	akhn                	uni0D21 uni0D4D uni0D21 -> glyph00168
+   0	akhn                	uni0D21 uni0D4D uni0D22 -> glyph00169
+   0	akhn                	uni0D23 uni0D4D uni0D1F -> glyph00174
+   0	akhn                	uni0D23 uni0D4D uni0D21 -> glyph00170
+   0	akhn                	uni0D23 uni0D4D uni0D23 -> glyph00173
+   0	akhn                	uni0D23 uni0D4D uni0D2E -> glyph00172
+   0	akhn                	uni0D23 uni0D4D uni200D -> uni0D7A
+   0	akhn                	uni0D23 uni200D uni0D4D uni0D22 -> glyph00171
+   0	akhn                	uni0D24 uni0D4D uni0D24 -> glyph00179
+   0	akhn                	uni0D24 uni0D4D uni0D24 uni0D4D uni0D32 -> glyph00180
+   0	akhn                	uni0D24 uni0D4D uni0D25 -> glyph00181
+   0	akhn                	uni0D24 uni0D4D uni0D28 -> glyph00175
+   0	akhn                	uni0D24 uni0D4D uni0D2D -> glyph00176
+   0	akhn                	uni0D24 uni0D4D uni0D2E -> glyph00177
+   0	akhn                	uni0D24 uni0D4D uni0D32 -> glyph00182
+   0	akhn                	uni0D24 uni0D4D uni0D38 -> glyph00178
+   0	akhn                	uni0D24 uni200D uni0D4D uni0D2D -> glyph00176
+   0	akhn                	uni0D26 uni0D4D uni0D26 -> glyph00183
+   0	akhn                	uni0D26 uni0D4D uni0D27 -> glyph00184
+   0	akhn                	uni0D28 uni0D4D uni0D24 -> glyph00190
+   0	akhn                	uni0D28 uni0D4D uni0D25 -> glyph00191
+   0	akhn                	uni0D28 uni0D4D uni0D26 -> glyph00185
+   0	akhn                	uni0D28 uni0D4D uni0D27 -> glyph00186
+   0	akhn                	uni0D28 uni0D4D uni0D28 -> glyph00187
+   0	akhn                	uni0D28 uni0D4D uni0D2E -> glyph00188
+   0	akhn                	uni0D28 uni0D4D uni0D31 -> glyph00189
+   0	akhn                	uni0D28 uni0D4D uni200D -> uni0D7B
+   0	akhn                	uni0D28 uni0D4D uni200D uni0D31 -> glyph00189
+   0	akhn                	uni0D28 uni200D uni0D4D uni0D25 -> glyph00191
+   0	akhn                	uni0D2A uni0D4D uni0D2A -> glyph00192
+   0	akhn                	uni0D2A uni0D4D uni0D32 -> glyph00193
+   0	akhn                	uni0D2B uni0D4D uni0D32 -> glyph00194
+   0	akhn                	uni0D2C uni0D4D uni0D2C -> glyph00195
+   0	akhn                	uni0D2C uni0D4D uni0D32 -> glyph00198
+   0	akhn                	uni0D2C uni200D uni0D4D uni0D26 -> glyph00196
+   0	akhn                	uni0D2C uni200D uni0D4D uni0D27 -> glyph00197
+   0	akhn                	uni0D2E uni0D4D uni0D2A -> glyph00200
+   0	akhn                	uni0D2E uni0D4D uni0D2E -> glyph00199
+   0	akhn                	uni0D2E uni0D4D uni0D32 -> glyph00201
+   0	akhn                	uni0D2F uni0D4D uni0D2F -> glyph00202
+   0	akhn                	uni0D30 uni0D4D uni200D -> uni0D7C
+   0	akhn                	uni0D31 uni0D4D uni0D31 -> glyph00203
+   0	akhn                	uni0D32 uni0D4D uni0D2A -> glyph00204
+   0	akhn                	uni0D32 uni0D4D uni0D32 -> glyph00205
+   0	akhn                	uni0D32 uni0D4D uni200D -> uni0D7D
+   0	akhn                	uni0D32 uni200D uni0D4D uni0D2A -> glyph00204
+   0	akhn                	uni0D33 uni0D4D uni0D33 -> glyph00206
+   0	akhn                	uni0D33 uni0D4D uni200D -> uni0D7E
+   0	akhn                	uni0D35 uni0D4D uni0D32 -> glyph00207
+   0	akhn                	uni0D35 uni0D4D uni0D35 -> glyph00208
+   0	akhn                	uni0D36 uni0D4D uni0D1A -> glyph00209
+   0	akhn                	uni0D36 uni0D4D uni0D32 -> glyph00212
+   0	akhn                	uni0D36 uni0D4D uni0D36 -> glyph00211
+   0	akhn                	uni0D36 uni200D uni0D4D uni0D1B -> glyph00210
+   0	akhn                	uni0D37 uni200D uni0D4D uni0D1F -> glyph00213
+   0	akhn                	uni0D38 uni0D4D uni0D25 -> glyph00216
+   0	akhn                	uni0D38 uni0D4D uni0D31 uni0D4D uni0D31 -> glyph00214
+   0	akhn                	uni0D38 uni0D4D uni0D32 -> glyph00217
+   0	akhn                	uni0D38 uni0D4D uni0D38 -> glyph00215
+   0	akhn                	uni0D38 uni200D uni0D4D uni0D25 -> glyph00216
+   0	akhn                	uni0D39 uni0D4D uni0D28 -> glyph00219
+   0	akhn                	uni0D39 uni0D4D uni0D2E -> glyph00218
+   0	akhn                	uni0D39 uni0D4D uni0D32 -> glyph00220
+   0	akhn                	uni0D39 uni200D uni0D4D uni0D28 -> glyph00219
+   0	akhn                	uni0D39 uni200D uni0D4D uni0D2E -> glyph00218
+   0	akhn                	uni0D7B uni0D4D uni0D31 -> glyph00189
+   1	akhn                	uni0D15 uni0D4D uni0D15 -> glyph00147
+   1	akhn                	uni0D15 uni0D4D uni0D1F -> glyph00149
+   1	akhn                	uni0D15 uni0D4D uni0D24 -> glyph00148
+   1	akhn                	uni0D15 uni0D4D uni0D32 -> glyph00150
+   1	akhn                	uni0D15 uni0D4D uni0D37 -> glyph00151
+   1	akhn                	uni0D15 uni0D4D uni200D -> uni0D7F
+   1	akhn                	uni0D15 uni200D uni0D4D uni0D1F -> glyph00149
+   1	akhn                	uni0D17 uni0D4D uni0D17 -> glyph00152
+   1	akhn                	uni0D17 uni0D4D uni0D26 -> glyph00153
+   1	akhn                	uni0D17 uni0D4D uni0D28 -> glyph00155
+   1	akhn                	uni0D17 uni0D4D uni0D2E -> glyph00154
+   1	akhn                	uni0D17 uni0D4D uni0D32 -> glyph00156
+   1	akhn                	uni0D17 uni200D uni0D4D uni0D26 -> glyph00153
+   1	akhn                	uni0D17 uni200D uni0D4D uni0D28 -> glyph00155
+   1	akhn                	uni0D17 uni200D uni0D4D uni0D2E -> glyph00154
+   1	akhn                	uni0D19 uni0D4D uni0D15 -> glyph00157
+   1	akhn                	uni0D19 uni0D4D uni0D19 -> glyph00158
+   1	akhn                	uni0D1A uni0D4D uni0D1A -> glyph00159
+   1	akhn                	uni0D1A uni0D4D uni0D1B -> glyph00160
+   1	akhn                	uni0D1C uni0D4D uni0D1C -> glyph00161
+   1	akhn                	uni0D1C uni0D4D uni0D1E -> glyph00162
+   1	akhn                	uni0D1E uni0D4D uni0D1A -> glyph00163
+   1	akhn                	uni0D1E uni0D4D uni0D1C -> glyph00165
+   1	akhn                	uni0D1E uni0D4D uni0D1E -> glyph00166
+   1	akhn                	uni0D1E uni200D uni0D4D uni0D1B -> glyph00164
+   1	akhn                	uni0D1F uni0D4D uni0D1F -> glyph00167
+   1	akhn                	uni0D21 uni0D4D uni0D21 -> glyph00168
+   1	akhn                	uni0D21 uni0D4D uni0D22 -> glyph00169
+   1	akhn                	uni0D23 uni0D4D uni0D1F -> glyph00174
+   1	akhn                	uni0D23 uni0D4D uni0D21 -> glyph00170
+   1	akhn                	uni0D23 uni0D4D uni0D23 -> glyph00173
+   1	akhn                	uni0D23 uni0D4D uni0D2E -> glyph00172
+   1	akhn                	uni0D23 uni0D4D uni200D -> uni0D7A
+   1	akhn                	uni0D23 uni200D uni0D4D uni0D22 -> glyph00171
+   1	akhn                	uni0D24 uni0D4D uni0D24 -> glyph00179
+   1	akhn                	uni0D24 uni0D4D uni0D24 uni0D4D uni0D32 -> glyph00180
+   1	akhn                	uni0D24 uni0D4D uni0D25 -> glyph00181
+   1	akhn                	uni0D24 uni0D4D uni0D28 -> glyph00175
+   1	akhn                	uni0D24 uni0D4D uni0D2D -> glyph00176
+   1	akhn                	uni0D24 uni0D4D uni0D2E -> glyph00177
+   1	akhn                	uni0D24 uni0D4D uni0D32 -> glyph00182
+   1	akhn                	uni0D24 uni0D4D uni0D38 -> glyph00178
+   1	akhn                	uni0D24 uni200D uni0D4D uni0D2D -> glyph00176
+   1	akhn                	uni0D26 uni0D4D uni0D26 -> glyph00183
+   1	akhn                	uni0D26 uni0D4D uni0D27 -> glyph00184
+   1	akhn                	uni0D28 uni0D4D uni0D24 -> glyph00190
+   1	akhn                	uni0D28 uni0D4D uni0D25 -> glyph00191
+   1	akhn                	uni0D28 uni0D4D uni0D26 -> glyph00185
+   1	akhn                	uni0D28 uni0D4D uni0D27 -> glyph00186
+   1	akhn                	uni0D28 uni0D4D uni0D28 -> glyph00187
+   1	akhn                	uni0D28 uni0D4D uni0D2E -> glyph00188
+   1	akhn                	uni0D28 uni0D4D uni0D31 -> glyph00189
+   1	akhn                	uni0D28 uni0D4D uni200D -> uni0D7B
+   1	akhn                	uni0D28 uni0D4D uni200D uni0D31 -> glyph00189
+   1	akhn                	uni0D28 uni200D uni0D4D uni0D25 -> glyph00191
+   1	akhn                	uni0D2A uni0D4D uni0D2A -> glyph00192
+   1	akhn                	uni0D2A uni0D4D uni0D32 -> glyph00193
+   1	akhn                	uni0D2B uni0D4D uni0D32 -> glyph00194
+   1	akhn                	uni0D2C uni0D4D uni0D2C -> glyph00195
+   1	akhn                	uni0D2C uni0D4D uni0D32 -> glyph00198
+   1	akhn                	uni0D2C uni200D uni0D4D uni0D26 -> glyph00196
+   1	akhn                	uni0D2C uni200D uni0D4D uni0D27 -> glyph00197
+   1	akhn                	uni0D2E uni0D4D uni0D2A -> glyph00200
+   1	akhn                	uni0D2E uni0D4D uni0D2E -> glyph00199
+   1	akhn                	uni0D2E uni0D4D uni0D32 -> glyph00201
+   1	akhn                	uni0D2F uni0D4D uni0D2F -> glyph00202
+   1	akhn                	uni0D30 uni0D4D uni200D -> uni0D7C
+   1	akhn                	uni0D31 uni0D4D uni0D31 -> glyph00203
+   1	akhn                	uni0D32 uni0D4D uni0D2A -> glyph00204
+   1	akhn                	uni0D32 uni0D4D uni0D32 -> glyph00205
+   1	akhn                	uni0D32 uni0D4D uni200D -> uni0D7D
+   1	akhn                	uni0D32 uni200D uni0D4D uni0D2A -> glyph00204
+   1	akhn                	uni0D33 uni0D4D uni0D33 -> glyph00206
+   1	akhn                	uni0D33 uni0D4D uni200D -> uni0D7E
+   1	akhn                	uni0D35 uni0D4D uni0D32 -> glyph00207
+   1	akhn                	uni0D35 uni0D4D uni0D35 -> glyph00208
+   1	akhn                	uni0D36 uni0D4D uni0D1A -> glyph00209
+   1	akhn                	uni0D36 uni0D4D uni0D32 -> glyph00212
+   1	akhn                	uni0D36 uni0D4D uni0D36 -> glyph00211
+   1	akhn                	uni0D36 uni200D uni0D4D uni0D1B -> glyph00210
+   1	akhn                	uni0D37 uni200D uni0D4D uni0D1F -> glyph00213
+   1	akhn                	uni0D38 uni0D4D uni0D25 -> glyph00216
+   1	akhn                	uni0D38 uni0D4D uni0D31 uni0D4D uni0D31 -> glyph00214
+   1	akhn                	uni0D38 uni0D4D uni0D32 -> glyph00217
+   1	akhn                	uni0D38 uni0D4D uni0D38 -> glyph00215
+   1	akhn                	uni0D38 uni200D uni0D4D uni0D25 -> glyph00216
+   1	akhn                	uni0D39 uni0D4D uni0D28 -> glyph00219
+   1	akhn                	uni0D39 uni0D4D uni0D2E -> glyph00218
+   1	akhn                	uni0D39 uni0D4D uni0D32 -> glyph00220
+   1	akhn                	uni0D39 uni200D uni0D4D uni0D28 -> glyph00219
+   1	akhn                	uni0D39 uni200D uni0D4D uni0D2E -> glyph00218
+   1	akhn                	uni0D7B uni0D4D uni0D31 -> glyph00189
+   2	akhn                	uni0D15 uni0D32 uni0D4D -> glyph00150
+   2	akhn                	uni0D15 uni0D4D uni0D15 -> glyph00147
+   2	akhn                	uni0D15 uni0D4D uni0D24 -> glyph00148
+   2	akhn                	uni0D15 uni0D4D uni0D37 -> glyph00151
+   2	akhn                	uni0D15 uni0D4D uni200D -> uni0D7F
+   2	akhn                	uni0D15 uni200D uni0D4D uni0D1F -> glyph00149
+   2	akhn                	uni0D17 uni0D32 uni0D4D -> glyph00156
+   2	akhn                	uni0D17 uni0D4D uni0D17 -> glyph00152
+   2	akhn                	uni0D17 uni0D4D uni0D28 -> glyph00155
+   2	akhn                	uni0D17 uni0D4D uni0D2E -> glyph00154
+   2	akhn                	uni0D17 uni200D uni0D4D uni0D26 -> glyph00153
+   2	akhn                	uni0D17 uni200D uni0D4D uni0D28 -> glyph00155
+   2	akhn                	uni0D17 uni200D uni0D4D uni0D2E -> glyph00154
+   2	akhn                	uni0D19 uni0D4D uni0D15 -> glyph00157
+   2	akhn                	uni0D19 uni0D4D uni0D19 -> glyph00158
+   2	akhn                	uni0D1A uni0D4D uni0D1A -> glyph00159
+   2	akhn                	uni0D1A uni0D4D uni0D1B -> glyph00160
+   2	akhn                	uni0D1C uni0D4D uni0D1C -> glyph00161
+   2	akhn                	uni0D1C uni0D4D uni0D1E -> glyph00162
+   2	akhn                	uni0D1E uni0D4D uni0D1A -> glyph00163
+   2	akhn                	uni0D1E uni0D4D uni0D1C -> glyph00165
+   2	akhn                	uni0D1E uni0D4D uni0D1E -> glyph00166
+   2	akhn                	uni0D1E uni200D uni0D4D uni0D1B -> glyph00164
+   2	akhn                	uni0D1F uni0D4D uni0D1F -> glyph00167
+   2	akhn                	uni0D21 uni0D4D uni0D21 -> glyph00168
+   2	akhn                	uni0D21 uni0D4D uni0D22 -> glyph00169
+   2	akhn                	uni0D23 uni0D4D uni0D1F -> glyph00174
+   2	akhn                	uni0D23 uni0D4D uni0D21 -> glyph00170
+   2	akhn                	uni0D23 uni0D4D uni0D23 -> glyph00173
+   2	akhn                	uni0D23 uni0D4D uni0D2E -> glyph00172
+   2	akhn                	uni0D23 uni0D4D uni200D -> uni0D7A
+   2	akhn                	uni0D23 uni200D uni0D4D uni0D22 -> glyph00171
+   2	akhn                	uni0D24 uni0D32 uni0D4D -> glyph00182
+   2	akhn                	uni0D24 uni0D4D uni0D24 -> glyph00179
+   2	akhn                	uni0D24 uni0D4D uni0D24 uni0D32 uni0D4D -> glyph00180
+   2	akhn                	uni0D24 uni0D4D uni0D25 -> glyph00181
+   2	akhn                	uni0D24 uni0D4D uni0D28 -> glyph00175
+   2	akhn                	uni0D24 uni0D4D uni0D2D -> glyph00176
+   2	akhn                	uni0D24 uni0D4D uni0D2E -> glyph00177
+   2	akhn                	uni0D24 uni0D4D uni0D38 -> glyph00178
+   2	akhn                	uni0D24 uni200D uni0D4D uni0D2D -> glyph00176
+   2	akhn                	uni0D26 uni0D4D uni0D26 -> glyph00183
+   2	akhn                	uni0D26 uni0D4D uni0D27 -> glyph00184
+   2	akhn                	uni0D28 uni0D4D uni0D24 -> glyph00190
+   2	akhn                	uni0D28 uni0D4D uni0D25 -> glyph00191
+   2	akhn                	uni0D28 uni0D4D uni0D26 -> glyph00185
+   2	akhn                	uni0D28 uni0D4D uni0D27 -> glyph00186
+   2	akhn                	uni0D28 uni0D4D uni0D28 -> glyph00187
+   2	akhn                	uni0D28 uni0D4D uni0D2E -> glyph00188
+   2	akhn                	uni0D28 uni0D4D uni0D31 -> glyph00189
+   2	akhn                	uni0D28 uni0D4D uni200D -> uni0D7B
+   2	akhn                	uni0D28 uni0D4D uni200D uni0D31 -> glyph00189
+   2	akhn                	uni0D28 uni200D uni0D4D uni0D25 -> glyph00191
+   2	akhn                	uni0D2A uni0D32 uni0D4D -> glyph00193
+   2	akhn                	uni0D2A uni0D4D uni0D2A -> glyph00192
+   2	akhn                	uni0D2B uni0D32 uni0D4D -> glyph00194
+   2	akhn                	uni0D2C uni0D32 uni0D4D -> glyph00198
+   2	akhn                	uni0D2C uni0D4D uni0D2C -> glyph00195
+   2	akhn                	uni0D2C uni200D uni0D4D uni0D26 -> glyph00196
+   2	akhn                	uni0D2C uni200D uni0D4D uni0D27 -> glyph00197
+   2	akhn                	uni0D2E uni0D32 uni0D4D -> glyph00201
+   2	akhn                	uni0D2E uni0D4D uni0D2A -> glyph00200
+   2	akhn                	uni0D2E uni0D4D uni0D2E -> glyph00199
+   2	akhn                	uni0D30 uni0D4D uni200D -> uni0D7C
+   2	akhn                	uni0D31 uni0D4D uni0D31 -> glyph00203
+   2	akhn                	uni0D32 uni0D32 uni0D4D -> glyph00205
+   2	akhn                	uni0D32 uni0D4D uni0D2A -> glyph00204
+   2	akhn                	uni0D32 uni0D4D uni200D -> uni0D7D
+   2	akhn                	uni0D32 uni200D uni0D4D uni0D2A -> glyph00204
+   2	akhn                	uni0D33 uni0D4D uni0D33 -> glyph00206
+   2	akhn                	uni0D33 uni0D4D uni200D -> uni0D7E
+   2	akhn                	uni0D35 uni0D32 uni0D4D -> glyph00207
+   2	akhn                	uni0D36 uni0D32 uni0D4D -> glyph00212
+   2	akhn                	uni0D36 uni0D4D uni0D1A -> glyph00209
+   2	akhn                	uni0D36 uni0D4D uni0D36 -> glyph00211
+   2	akhn                	uni0D36 uni200D uni0D4D uni0D1B -> glyph00210
+   2	akhn                	uni0D37 uni200D uni0D4D uni0D1F -> glyph00213
+   2	akhn                	uni0D38 uni0D32 uni0D4D -> glyph00217
+   2	akhn                	uni0D38 uni0D4D uni0D25 -> glyph00216
+   2	akhn                	uni0D38 uni0D4D uni0D31 uni0D4D uni0D31 -> glyph00214
+   2	akhn                	uni0D38 uni0D4D uni0D38 -> glyph00215
+   2	akhn                	uni0D38 uni200D uni0D4D uni0D25 -> glyph00216
+   2	akhn                	uni0D39 uni0D32 uni0D4D -> glyph00220
+   2	akhn                	uni0D39 uni0D4D uni0D28 -> glyph00219
+   2	akhn                	uni0D39 uni0D4D uni0D2E -> glyph00218
+   2	akhn                	uni0D39 uni200D uni0D4D uni0D28 -> glyph00219
+   2	akhn                	uni0D39 uni200D uni0D4D uni0D2E -> glyph00218
+   2	akhn                	uni0D7B uni0D4D uni0D31 -> glyph00189
+   3	akhn                	uni0D15 uni0D32 uni0D4D -> glyph00150
+   3	akhn                	uni0D15 uni0D4D uni0D15 -> glyph00147
+   3	akhn                	uni0D15 uni0D4D uni0D1F -> glyph00149
+   3	akhn                	uni0D15 uni0D4D uni0D24 -> glyph00148
+   3	akhn                	uni0D15 uni0D4D uni0D37 -> glyph00151
+   3	akhn                	uni0D15 uni0D4D uni200D -> uni0D7F
+   3	akhn                	uni0D15 uni200D uni0D4D uni0D1F -> glyph00149
+   3	akhn                	uni0D17 uni0D32 uni0D4D -> glyph00156
+   3	akhn                	uni0D17 uni0D4D uni0D17 -> glyph00152
+   3	akhn                	uni0D17 uni0D4D uni0D26 -> glyph00153
+   3	akhn                	uni0D17 uni0D4D uni0D28 -> glyph00155
+   3	akhn                	uni0D17 uni0D4D uni0D2E -> glyph00154
+   3	akhn                	uni0D17 uni200D uni0D4D uni0D26 -> glyph00153
+   3	akhn                	uni0D17 uni200D uni0D4D uni0D28 -> glyph00155
+   3	akhn                	uni0D17 uni200D uni0D4D uni0D2E -> glyph00154
+   3	akhn                	uni0D19 uni0D4D uni0D15 -> glyph00157
+   3	akhn                	uni0D19 uni0D4D uni0D19 -> glyph00158
+   3	akhn                	uni0D1A uni0D4D uni0D1A -> glyph00159
+   3	akhn                	uni0D1A uni0D4D uni0D1B -> glyph00160
+   3	akhn                	uni0D1C uni0D4D uni0D1C -> glyph00161
+   3	akhn                	uni0D1C uni0D4D uni0D1E -> glyph00162
+   3	akhn                	uni0D1E uni0D4D uni0D1A -> glyph00163
+   3	akhn                	uni0D1E uni0D4D uni0D1C -> glyph00165
+   3	akhn                	uni0D1E uni0D4D uni0D1E -> glyph00166
+   3	akhn                	uni0D1E uni200D uni0D4D uni0D1B -> glyph00164
+   3	akhn                	uni0D1F uni0D4D uni0D1F -> glyph00167
+   3	akhn                	uni0D21 uni0D4D uni0D21 -> glyph00168
+   3	akhn                	uni0D21 uni0D4D uni0D22 -> glyph00169
+   3	akhn                	uni0D23 uni0D4D uni0D1F -> glyph00174
+   3	akhn                	uni0D23 uni0D4D uni0D21 -> glyph00170
+   3	akhn                	uni0D23 uni0D4D uni0D23 -> glyph00173
+   3	akhn                	uni0D23 uni0D4D uni0D2E -> glyph00172
+   3	akhn                	uni0D23 uni0D4D uni200D -> uni0D7A
+   3	akhn                	uni0D23 uni200D uni0D4D uni0D22 -> glyph00171
+   3	akhn                	uni0D24 uni0D32 uni0D4D -> glyph00182
+   3	akhn                	uni0D24 uni0D4D uni0D24 -> glyph00179
+   3	akhn                	uni0D24 uni0D4D uni0D24 uni0D32 uni0D4D -> glyph00180
+   3	akhn                	uni0D24 uni0D4D uni0D25 -> glyph00181
+   3	akhn                	uni0D24 uni0D4D uni0D28 -> glyph00175
+   3	akhn                	uni0D24 uni0D4D uni0D2D -> glyph00176
+   3	akhn                	uni0D24 uni0D4D uni0D2E -> glyph00177
+   3	akhn                	uni0D24 uni0D4D uni0D38 -> glyph00178
+   3	akhn                	uni0D24 uni200D uni0D4D uni0D2D -> glyph00176
+   3	akhn                	uni0D26 uni0D4D uni0D26 -> glyph00183
+   3	akhn                	uni0D26 uni0D4D uni0D27 -> glyph00184
+   3	akhn                	uni0D28 uni0D4D uni0D24 -> glyph00190
+   3	akhn                	uni0D28 uni0D4D uni0D25 -> glyph00191
+   3	akhn                	uni0D28 uni0D4D uni0D26 -> glyph00185
+   3	akhn                	uni0D28 uni0D4D uni0D27 -> glyph00186
+   3	akhn                	uni0D28 uni0D4D uni0D28 -> glyph00187
+   3	akhn                	uni0D28 uni0D4D uni0D2E -> glyph00188
+   3	akhn                	uni0D28 uni0D4D uni0D31 -> glyph00189
+   3	akhn                	uni0D28 uni0D4D uni200D -> uni0D7B
+   3	akhn                	uni0D28 uni0D4D uni200D uni0D31 -> glyph00189
+   3	akhn                	uni0D28 uni200D uni0D4D uni0D25 -> glyph00191
+   3	akhn                	uni0D2A uni0D32 uni0D4D -> glyph00193
+   3	akhn                	uni0D2A uni0D4D uni0D2A -> glyph00192
+   3	akhn                	uni0D2B uni0D32 uni0D4D -> glyph00194
+   3	akhn                	uni0D2C uni0D32 uni0D4D -> glyph00198
+   3	akhn                	uni0D2C uni0D4D uni0D2C -> glyph00195
+   3	akhn                	uni0D2C uni200D uni0D4D uni0D26 -> glyph00196
+   3	akhn                	uni0D2C uni200D uni0D4D uni0D27 -> glyph00197
+   3	akhn                	uni0D2E uni0D32 uni0D4D -> glyph00201
+   3	akhn                	uni0D2E uni0D4D uni0D2A -> glyph00200
+   3	akhn                	uni0D2E uni0D4D uni0D2E -> glyph00199
+   3	akhn                	uni0D30 uni0D4D uni200D -> uni0D7C
+   3	akhn                	uni0D31 uni0D4D uni0D31 -> glyph00203
+   3	akhn                	uni0D32 uni0D32 uni0D4D -> glyph00205
+   3	akhn                	uni0D32 uni0D4D uni0D2A -> glyph00204
+   3	akhn                	uni0D32 uni0D4D uni200D -> uni0D7D
+   3	akhn                	uni0D32 uni200D uni0D4D uni0D2A -> glyph00204
+   3	akhn                	uni0D33 uni0D4D uni0D33 -> glyph00206
+   3	akhn                	uni0D33 uni0D4D uni200D -> uni0D7E
+   3	akhn                	uni0D35 uni0D32 uni0D4D -> glyph00207
+   3	akhn                	uni0D36 uni0D32 uni0D4D -> glyph00212
+   3	akhn                	uni0D36 uni0D4D uni0D1A -> glyph00209
+   3	akhn                	uni0D36 uni0D4D uni0D36 -> glyph00211
+   3	akhn                	uni0D36 uni200D uni0D4D uni0D1B -> glyph00210
+   3	akhn                	uni0D37 uni200D uni0D4D uni0D1F -> glyph00213
+   3	akhn                	uni0D38 uni0D32 uni0D4D -> glyph00217
+   3	akhn                	uni0D38 uni0D4D uni0D25 -> glyph00216
+   3	akhn                	uni0D38 uni0D4D uni0D31 uni0D4D uni0D31 -> glyph00214
+   3	akhn                	uni0D38 uni0D4D uni0D38 -> glyph00215
+   3	akhn                	uni0D38 uni200D uni0D4D uni0D25 -> glyph00216
+   3	akhn                	uni0D39 uni0D32 uni0D4D -> glyph00220
+   3	akhn                	uni0D39 uni0D4D uni0D28 -> glyph00219
+   3	akhn                	uni0D39 uni0D4D uni0D2E -> glyph00218
+   3	akhn                	uni0D39 uni200D uni0D4D uni0D28 -> glyph00219
+   3	akhn                	uni0D39 uni200D uni0D4D uni0D2E -> glyph00218
+   3	akhn                	uni0D7B uni0D4D uni0D31 -> glyph00189
+   4	pref                	uni0D4D uni0D30 -> glyph00146
+   6	half                	glyph00151 uni0D4D -> glyph00142
+   6	half                	uni0D15 uni0D4D -> glyph00106
+   6	half                	uni0D15 uni0D4D uni200D -> uni0D7F
+   6	half                	uni0D16 uni0D4D -> glyph00107
+   6	half                	uni0D17 uni0D4D -> glyph00108
+   6	half                	uni0D18 uni0D4D -> glyph00109
+   6	half                	uni0D19 uni0D4D -> glyph00110
+   6	half                	uni0D1A uni0D4D -> glyph00111
+   6	half                	uni0D1B uni0D4D -> glyph00112
+   6	half                	uni0D1C uni0D4D -> glyph00113
+   6	half                	uni0D1D uni0D4D -> glyph00114
+   6	half                	uni0D1E uni0D4D -> glyph00115
+   6	half                	uni0D1F uni0D4D -> glyph00116
+   6	half                	uni0D20 uni0D4D -> glyph00117
+   6	half                	uni0D21 uni0D4D -> glyph00118
+   6	half                	uni0D22 uni0D4D -> glyph00119
+   6	half                	uni0D23 uni0D4D -> glyph00120
+   6	half                	uni0D23 uni0D4D uni200D -> uni0D7A
+   6	half                	uni0D24 uni0D4D -> glyph00121
+   6	half                	uni0D25 uni0D4D -> glyph00122
+   6	half                	uni0D26 uni0D4D -> glyph00123
+   6	half                	uni0D27 uni0D4D -> glyph00124
+   6	half                	uni0D28 uni0D4D -> glyph00125
+   6	half                	uni0D28 uni0D4D uni200D -> uni0D7B
+   6	half                	uni0D2A uni0D4D -> glyph00126
+   6	half                	uni0D2B uni0D4D -> glyph00127
+   6	half                	uni0D2C uni0D4D -> glyph00128
+   6	half                	uni0D2D uni0D4D -> glyph00129
+   6	half                	uni0D2E uni0D4D -> glyph00130
+   6	half                	uni0D2F uni0D4D -> glyph00131
+   6	half                	uni0D30 uni0D4D -> glyph00132
+   6	half                	uni0D30 uni0D4D uni200D -> uni0D7C
+   6	half                	uni0D31 uni0D4D -> glyph00133
+   6	half                	uni0D32 uni0D4D -> glyph00134
+   6	half                	uni0D32 uni0D4D uni200D -> uni0D7D
+   6	half                	uni0D33 uni0D4D -> glyph00135
+   6	half                	uni0D33 uni0D4D uni200D -> uni0D7E
+   6	half                	uni0D34 uni0D4D -> glyph00136
+   6	half                	uni0D35 uni0D4D -> glyph00137
+   6	half                	uni0D36 uni0D4D -> glyph00138
+   6	half                	uni0D37 uni0D4D -> glyph00139
+   6	half                	uni0D38 uni0D4D -> glyph00140
+   6	half                	uni0D39 uni0D4D -> glyph00141
+   7	blwf                	uni0D32 uni0D4D -> glyph00143
+   8	blwf                	glyph00143 -> uni0D4D uni0D32
+   9	pstf                	uni0D4D uni0D2F -> glyph00144
+   9	pstf                	uni0D4D uni0D35 -> glyph00145
+  11	pstf                	uni0D2F uni0D4D -> glyph00144
+  11	pstf                	uni0D30 uni0D4D -> glyph00146
+  11	pstf                	uni0D35 uni0D4D -> glyph00145
+  12	psts                	uni0D2F glyph00144 -> glyph00202
+  12	psts                	uni0D2F uni0D4D uni0D2F -> glyph00202
+  12	psts                	uni0D32 uni0D4D uni0D32 -> glyph00205
+  12	psts                	uni0D35 glyph00145 -> glyph00208
+  12	psts                	uni0D35 uni0D4D uni0D35 -> glyph00208
+  14	                    	glyph00144 -> uni0D4D
+  14	                    	glyph00145 -> uni0D4D
+  15	                    	glyph00144 -> glyph00202
+  15	                    	glyph00145 -> glyph00208
+  16	                    	glyph00145 -> uni0D4D uni0D35
+  16	                    	glyph00146 -> uni0D4D uni0D30
+  18	                    	glyph00149 -> uni0D15 uni0D4D uni0D1F
+  18	                    	glyph00150 -> uni0D15 uni0D4D uni0D32
+  18	                    	glyph00152 -> uni0D17 uni0D4D uni0D17
+  18	                    	glyph00156 -> uni0D17 uni0D4D uni0D32
+  18	                    	glyph00159 -> uni0D1A uni0D4D uni0D1A
+  18	                    	glyph00160 -> uni0D1A uni0D4D uni0D1B
+  18	                    	glyph00167 -> uni0D1F uni0D4D uni0D1F
+  18	                    	glyph00168 -> uni0D21 uni0D4D uni0D21
+  18	                    	glyph00169 -> uni0D21 uni0D4D uni0D22
+  18	                    	glyph00173 -> uni0D23 uni0D4D uni0D23
+  18	                    	glyph00180 -> glyph00179 uni0D4D uni0D32
+  18	                    	glyph00182 -> uni0D24 uni0D4D uni0D32
+  18	                    	glyph00183 -> uni0D26 uni0D4D uni0D26
+  18	                    	glyph00192 -> uni0D2A uni0D4D uni0D2A
+  18	                    	glyph00193 -> uni0D2A uni0D4D uni0D32
+  18	                    	glyph00194 -> uni0D2B uni0D4D uni0D32
+  18	                    	glyph00195 -> uni0D2C uni0D4D uni0D2C
+  18	                    	glyph00196 -> uni0D2C uni0D4D uni0D26
+  18	                    	glyph00197 -> uni0D2C uni0D4D uni0D27
+  18	                    	glyph00198 -> uni0D2C uni0D4D uni0D32
+  18	                    	glyph00201 -> uni0D2E uni0D4D uni0D32
+  18	                    	glyph00202 -> uni0D2F uni0D4D uni0D2F
+  18	                    	glyph00203 -> uni0D31 uni0D4D uni0D31
+  18	                    	glyph00204 -> uni0D32 uni0D4D uni0D2A
+  18	                    	glyph00205 -> uni0D32 uni0D4D uni0D32
+  18	                    	glyph00207 -> uni0D35 uni0D4D uni0D32
+  18	                    	glyph00208 -> uni0D35 uni0D4D uni0D35
+  18	                    	glyph00211 -> uni0D36 uni0D4D uni0D36
+  18	                    	glyph00212 -> uni0D36 uni0D4D uni0D32
+  18	                    	glyph00213 -> uni0D37 uni0D4D uni0D1F
+  18	                    	glyph00214 -> uni0D38 uni0D4D glyph00133 uni0D31
+  18	                    	glyph00215 -> uni0D38 uni0D4D uni0D38
+  18	                    	glyph00217 -> uni0D38 uni0D4D uni0D32
+  18	                    	glyph00220 -> uni0D39 uni0D4D uni0D32
+  20	                    	glyph00149 -> glyph00106 uni0D1F
+  20	                    	glyph00150 -> glyph00106 uni0D32
+  20	                    	glyph00152 -> glyph00108 uni0D17
+  20	                    	glyph00156 -> glyph00108 uni0D32
+  20	                    	glyph00159 -> glyph00111 uni0D1A
+  20	                    	glyph00160 -> glyph00111 uni0D1B
+  20	                    	glyph00167 -> glyph00116 uni0D1F
+  20	                    	glyph00168 -> glyph00118 uni0D21
+  20	                    	glyph00169 -> glyph00118 uni0D22
+  20	                    	glyph00173 -> glyph00120 uni0D23
+  20	                    	glyph00180 -> glyph00179 uni0D4D uni0D32
+  20	                    	glyph00182 -> glyph00121 uni0D32
+  20	                    	glyph00183 -> glyph00123 uni0D26
+  20	                    	glyph00192 -> glyph00126 uni0D2A
+  20	                    	glyph00193 -> glyph00126 uni0D32
+  20	                    	glyph00194 -> glyph00127 uni0D32
+  20	                    	glyph00195 -> glyph00128 uni0D2C
+  20	                    	glyph00196 -> glyph00128 uni0D26
+  20	                    	glyph00197 -> glyph00128 uni0D27
+  20	                    	glyph00198 -> glyph00128 uni0D32
+  20	                    	glyph00201 -> glyph00130 uni0D32
+  20	                    	glyph00202 -> glyph00131 uni0D32
+  20	                    	glyph00203 -> glyph00133 uni0D31
+  20	                    	glyph00204 -> glyph00134 uni0D2A
+  20	                    	glyph00205 -> glyph00134 uni0D32
+  20	                    	glyph00207 -> glyph00137 uni0D32
+  20	                    	glyph00208 -> glyph00137 uni0D32
+  20	                    	glyph00211 -> glyph00138 uni0D36
+  20	                    	glyph00212 -> glyph00138 uni0D32
+  20	                    	glyph00213 -> glyph00139 uni0D1F
+  20	                    	glyph00214 -> glyph00140 glyph00133 uni0D31
+  20	                    	glyph00215 -> glyph00140 uni0D38
+  20	                    	glyph00217 -> glyph00140 uni0D32
+  20	                    	glyph00220 -> glyph00141 uni0D32
+  21	psts                	uni0D1F uni0D62 -> glyph00234
+  21	psts                	uni0D1F uni0D63 -> glyph00242
+  21	psts                	uni0D20 uni0D62 -> glyph00235
+  21	psts                	uni0D20 uni0D63 -> glyph00243
+  21	psts                	uni0D26 uni0D62 -> glyph00236
+  21	psts                	uni0D26 uni0D63 -> glyph00244
+  21	psts                	uni0D2D uni0D62 -> glyph00237
+  21	psts                	uni0D2D uni0D63 -> glyph00245
+  21	psts                	uni0D2E uni0D62 -> glyph00238
+  21	psts                	uni0D2E uni0D63 -> glyph00246
+  21	psts                	uni0D30 uni0D62 -> glyph00239
+  21	psts                	uni0D30 uni0D63 -> glyph00247
+  21	psts                	uni0D31 uni0D62 -> glyph00240
+  21	psts                	uni0D31 uni0D63 -> glyph00248
+  21	psts                	uni0D34 uni0D62 -> glyph00241
+  21	psts                	uni0D34 uni0D63 -> glyph00249
+  24	                    	glyph00146 -> glyph00231
+  26	                    	uni0D3F -> glyph00222
+  26	                    	uni0D40 -> glyph00224
+  27	                    	glyph00144 -> glyph00229
+  27	                    	glyph00145 -> glyph00230
+  27	                    	uni0D3F -> glyph00221
+  27	                    	uni0D40 -> glyph00223
+  27	                    	uni0D41 -> glyph00225
+  27	                    	uni0D42 -> glyph00226
+  27	                    	uni0D43 -> glyph00227
+  27	                    	uni0D44 -> glyph00228
+  27	                    	uni0D62 -> glyph00232
+  27	                    	uni0D63 -> glyph00233
+  28	liga, psts          	uni0D17 dotbelowcomb -> glyph00305
+  28	liga, psts          	uni0D17 uni0307 -> glyph00304
+  28	liga, psts          	uni0D27 dotbelowcomb -> glyph00307
+  28	liga, psts          	uni0D27 uni0307 -> glyph00306
+  28	liga, psts          	uni0D28 dotbelowcomb uni0D3F -> glyph00309
+  28	liga, psts          	uni0D28 uni0307 uni0D3F -> glyph00308
+  28	liga, psts          	uni0D28 uni0D3F dotbelowcomb -> glyph00309
+  28	liga, psts          	uni0D28 uni0D3F uni0307 -> glyph00308
+  28	liga, psts          	uni0D2A dotbelowcomb -> glyph00311
+  28	liga, psts          	uni0D2A uni0307 -> glyph00310
+  28	liga, psts          	uni0D2E dotbelowcomb -> glyph00313
+  28	liga, psts          	uni0D2E uni0307 -> glyph00312
+  28	liga, psts          	uni0D30 dotbelowcomb uni0D3F -> glyph00315
+  28	liga, psts          	uni0D30 uni0307 uni0D3F -> glyph00314
+  28	liga, psts          	uni0D30 uni0D3F dotbelowcomb -> glyph00315
+  28	liga, psts          	uni0D30 uni0D3F uni0307 -> glyph00314
+  28	liga, psts          	uni0D38 dotbelowcomb -> glyph00317
+  28	liga, psts          	uni0D38 uni0307 -> glyph00316
+  29	haln                	uni0D15 uni0D4D uni200D -> uni0D7F
+  29	haln                	uni0D23 uni0D4D uni200D -> uni0D7A
+  29	haln                	uni0D28 uni0D4D uni200D -> uni0D7B
+  29	haln                	uni0D30 uni0D4D uni200D -> uni0D7C
+  29	haln                	uni0D32 uni0D4D uni200D -> uni0D7D
+  29	haln                	uni0D33 uni0D4D uni200D -> uni0D7E
+
+
