@@ -30,7 +30,7 @@ import re
 import subprocess
 import sys
 import unicodedata
-
+from fontTools.misc.py23 import *
 from fontTools.ttLib import TTFont
 
 
@@ -113,7 +113,7 @@ class FontFile(object):
 
   def GetFeaturesByTable(self):
     mapping = {}
-    for key, scripts in self.features.iteritems():
+    for key, scripts in self.features.items():
       feature, tables = key
       for table in tables:
         if table not in mapping:
@@ -133,7 +133,7 @@ class FontFile(object):
       return
 
     scripts = [set() for unused_x
-               in xrange(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
+               in range(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
     # Find scripts defined in a font
     for script in self.ttf['GSUB'].table.ScriptList.ScriptRecord:
       if script.Script.DefaultLangSys:
@@ -154,23 +154,23 @@ class FontFile(object):
     for idx, lookup in enumerate(self.ttf['GSUB'].table.LookupList.Lookup):
       for sub in lookup.SubTable:
         if sub.LookupType == 1:
-          for k, v in sub.mapping.iteritems():
+          for k, v in sub.mapping.items():
             self.substitutes.add(((k,), ((v,),), idx, 1))
         elif sub.LookupType == 2:
-          for k, v in sub.mapping.iteritems():
+          for k, v in sub.mapping.items():
             self.substitutes.add(((k,), (tuple(v),), idx, 1))
         elif sub.LookupType == 3:
-          for k, v in sub.alternates.iteritems():
+          for k, v in sub.alternates.items():
             self.substitutes.add(((k,), tuple((x,) for x in v), idx, 3))
         elif sub.LookupType == 4:
-          for key, value in sub.ligatures.iteritems():
+          for key, value in sub.ligatures.items():
             for component in value:
               sequence = tuple([key] + component.Component)
               glyph = component.LigGlyph
               self.substitutes.add((sequence, ((glyph,),), idx, 4))
         else:
-          print 'Lookup table %d: type %s not yet supported.' % (
-              idx, sub.LookupType)
+          print('Lookup table %d: type %s not yet supported.' % (
+              idx, sub.LookupType))
 
   def _ParseGlyphs(self):
     """Fetch available glyphs."""
@@ -196,17 +196,17 @@ class FontFile(object):
       glyph.class_name = class_names.get(glyph.class_def, None)
       self.glyphs.append(glyph)
       self._glyphsmap[name] = glyph
-    for k, v in self.chars.iteritems():
+    for k, v in self.chars.items():
       try:
         self._glyphsmap[v].chars.append(k)
       except KeyError:
-        print '%s is mapped to non-existent glyph %s' % (k, v)
+        print('%s is mapped to non-existent glyph %s' % (k, v))
 
   def GetName(self, name, default=None):
     return self._names.get(self.NAME_CODES[name], default)
 
   def GetNames(self):
-    return ['%d: %s' % (k, v) for k, v in sorted(self._names.iteritems())]
+    return ['%d: %s' % (k, v) for k, v in sorted(self._names.items())]
 
   def GetGlyph(self, name):
     return self._glyphsmap[name]
@@ -251,7 +251,7 @@ class UnicodeCoverageReport(Report):
 
   def Plaintext(self):
     data = ''
-    for code, name in sorted(self.font.chars.iteritems()):
+    for code, name in sorted(self.font.chars.items()):
       try:
         uniname = unicodedata.name(unichr(code))
       except ValueError:
@@ -268,7 +268,7 @@ class UnicodeCoverageReport(Report):
       except ValueError:
         uniname = ''
       if code - prevcode > 1:
-        gaps = len([x for x in  xrange(prevcode + 1, code)
+        gaps = len([x for x in  range(prevcode + 1, code)
                     if unicodedata.category(unichr(x))[0] != 'C'])
         if gaps:
           data += ('\\rowcolor{missing}\\multicolumn{3}{|c|}'
@@ -309,7 +309,7 @@ class GlyphsReport(Report):
   def XetexBody(self):
     data = ''
     uni = {}
-    for code, name in self.font.chars.iteritems():
+    for code, name in self.font.chars.items():
       if name not in uni:
         uni[name] = []
       uni[name].append(code)
@@ -344,14 +344,14 @@ class LigaturesReport(Report):
 
   def Plaintext(self):
     data = ''
-    for glyph, caret_list in sorted(self.font.caret_list.iteritems()):
+    for glyph, caret_list in sorted(self.font.caret_list.items()):
       data += '%-10s\t%s\t%s\n' % (
           glyph, ', '.join(caret_list), '-')
     return data
 
   def XetexBody(self):
     data = ''
-    for glyph, caret_list in sorted(self.font.caret_list.iteritems()):
+    for glyph, caret_list in sorted(self.font.caret_list.items()):
       coords = ', '.join(str(x) for x in caret_list)
       data += '%s(%s) & %s & %s \\\\\n' % (
           TexGlyph(self.font.GetGlyph(glyph)), TexEscape(glyph),
@@ -465,7 +465,7 @@ class FeaturesReport(Report):
 
   def Plaintext(self):
     data = ''
-    for key, scripts in sorted(self.font.features.iteritems()):
+    for key, scripts in sorted(self.font.features.items()):
       feature, tables = key
       scriptlist = ', '.join(x for x in scripts if x)
       data += '%4s\t%s\t%s\t%s\n' % (
@@ -475,7 +475,7 @@ class FeaturesReport(Report):
 
   def XetexBody(self):
     data = ''
-    for key, scripts in sorted(self.font.features.iteritems()):
+    for key, scripts in sorted(self.font.features.items()):
       feature, tables = key
       scriptlist = ', '.join(x.strip() for x in sorted(scripts) if x)
       data += '%s & %s & %s & %s  \\\\\n' % (
@@ -591,7 +591,7 @@ def main():
     infile = argv[1]
     outfile = None
   else:
-    print 'Usage: %s infile [outfile]' % argv[0]
+    print('Usage: %s infile [outfile]' % argv[0])
     sys.exit(-1)
 
   font = FontFile(infile)
@@ -613,7 +613,7 @@ def main():
       subprocess.check_call(['xelatex', tofile])
       subprocess.check_call(['xelatex', tofile])
   else:
-    print envelope.Report(False).encode('utf-8')
+    print(envelope.Report(False).encode('utf-8'))
 
 
 if __name__ == '__main__':
