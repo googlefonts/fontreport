@@ -605,7 +605,7 @@ def main():
       if ext == '.pdf':
         tofile = name + '.tex'
 
-    with open(tofile, 'w') as f:
+    with open(tofile, 'wb') as f:
       f.write(envelope.Report(xetex).encode('utf-8'))
     if ext == '.pdf':
       # Call twice to let longtable package calculate
