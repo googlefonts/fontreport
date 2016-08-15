@@ -15,10 +15,13 @@
 
 from setuptools import setup
 
+ns={}
+with open('fontreport/version.py') as f:
+  exec(f.read(), ns)
 
 setup(
     name='fontreport',
-    version='1.0',
+    version=ns['__version__'],
     packages=['fontreport'],
     entry_points = {
         'console_scripts': [
