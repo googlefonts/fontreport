@@ -32,6 +32,7 @@ import sys
 import unicodedata
 from fontTools.misc.py23 import *
 from fontTools.ttLib import TTFont
+import version
 
 
 class Glyph(object):
@@ -272,7 +273,7 @@ class UnicodeCoverageReport(Report):
                     if unicodedata.category(unichr(x))[0] != 'C'])
         if gaps:
           data += ('\\rowcolor{missing}\\multicolumn{3}{|c|}'
-                   '{\\small %d codepoints not mapped} \\\\\n') % (gaps)
+                   '{\\small %d visible characters not mapped to glyphs} \\\\\n') % (gaps)
       prevcode = code
       data += ('\\texttt{%04X} & {\\customfont\\symbol{%d}} &'
                '{\\small %s}\\\\\n') % (code, code, uniname)
@@ -589,6 +590,9 @@ def main():
     outfile = argv[2]
   elif len(argv) == 2:
     infile = argv[1]
+    if infile in ('--version', '-v'):
+      print('FontReport version %s' % version.__version__)
+      sys.exit(0)
     outfile = None
   else:
     print('Usage: %s infile [outfile]' % argv[0])
