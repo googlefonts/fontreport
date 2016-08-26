@@ -678,9 +678,13 @@ def main():
   parser.add_argument('-v', '--version',
                       action='version',
                       version='FontReport version %s' % version.__version__)
-  parser.add_argument('--render',
-                      metavar='TEXT',
-                      help='Text to render using provided font.')
+  group = parser.add_mutually_exclusive_group()
+  group.add_argument('--render',
+                     metavar='TEXT',
+                     help='Text to render using provided font.')
+  group.add_argument('--render-file',
+                     metavar='TEXT',
+                     help='Text to render using provided font.')
   parser.add_argument('--features',
                       action='append',
                       help='OpenType features to use for rendering')
@@ -689,11 +693,17 @@ def main():
   args = parser.parse_args()
 
   font = FontFile(args.font_file)
-  if args.render:
+  text = None
+  if args.render_file:
+    with open(args.render_file, 'rb') as f:
+      text = f.read()
+  elif args.render:
+    text = args.render
+  if text:
     if not args.output_file:
       print >>sys.stderr, 'Output .pdf file is required to render text'
       sys.exit(-1)
-    ProcessTex(RenderText(font, args.render.decode('utf-8'), args.features),
+    ProcessTex(RenderText(font, text.decode('utf-8'), args.features),
                args.output_file)
   else:
     envelope = Envelope(font)
