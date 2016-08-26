@@ -639,11 +639,11 @@ def RenderText(font, text, features, lang):
   feature_mapping.update(('ss%02d' % x, ('StylisticSet', str(x))) for x in range(10))
 
   escaped_text = TexEscape(text)
-  rendered_text = r'\customfont{%s}' % escaped_text
+  rendered_text = r'{\customfont %s}' % escaped_text
   settings = {
       'Scale': set('2',),
   }
-  if features:
+  if features or lang:
     settings['Ligatures'] = set(('NoRequired', 'NoCommon', 'NoContextual'))
     initial_settings = BuildFontSettings(settings)
     for key, value in [v for k, v in feature_mapping.items() if k in features]:
@@ -655,20 +655,16 @@ def RenderText(font, text, features, lang):
         settings[key].remove(noval)
       else:
         settings[key].add(value)
-    descr = 'No features vs. %s' % ', '.join(features)
-    if any(lang):
-      descr += ', %s script, %s language' % (
-          lang[0] or 'default',
-          lang[1] or 'default'
-      )
+    used_features = ['%s %s' % x
+                     for x in zip(lang, ('script', 'language'))
+                     if x[0]] + [x for x in features if x in feature_mapping]
     lines = (
-      r'\newfontface\reffont[Path=%s/,%s]{%s}' % (
+      r'\newfontface\reffont[Path=%s/,Color=707070,%s]{%s}' % (
           font_dir, initial_settings, font_name),
-      descr,
-      r'\newline',
-      r'\reffont{%s}' % escaped_text,
-      r'\newline',
+      ', '.join(used_features) + r' vs. {\color{refcolor} no OpenType features}\\',
       rendered_text,
+      r'\\'
+      r'{\reffont %s}' % escaped_text,
     )
   else:
     lines = (rendered_text,)
@@ -678,6 +674,8 @@ def RenderText(font, text, features, lang):
   yield '\n'.join((
     r'\documentclass{letter}',
     r'\usepackage{fontspec}',
+    r'\usepackage{color}',
+    r'\definecolor{refcolor}{gray}{.44}',
     r'\usepackage[top=.25in, bottom=.25in, left=.5in, right=.5in]{geometry}',
     r'\newfontface\customfont[Path=%s/, %s]{%s}' % (
         font_dir, feature_line, font_name),
@@ -699,6 +697,7 @@ def main():
                      metavar='TEXT',
                      help='Text to render using provided font.')
   parser.add_argument('--features',
+                      default=[],
                       action='append',
                       help='OpenType features to use for rendering')
   parser.add_argument('--script',
