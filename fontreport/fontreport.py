@@ -25,6 +25,7 @@ Reports are generated in PDF format and contain font-specific rendering of
 the glyphs supported by the font.
 
 """
+import argparse
 import os
 import re
 import subprocess
@@ -583,41 +584,125 @@ def TexEscape(name):
   return re.sub(r'([_#&{}\[\]])', r'\\\1', name)
 
 
+def ProcessTex(sequence, output):
+  name, ext = os.path.splitext(output)
+  intermediate = name + '.tex'
+  with open(intermediate, 'wb') as f:
+    for line in sequence:
+      f.write(line.encode('utf-8'))
+      f.write('\n')
+  if ext == '.pdf':
+    subprocess.check_call(['xelatex', intermediate])
+    subprocess.check_call(['xelatex', intermediate])
+
+
+def BuildFontSettings(settings):
+  return ', '.join('%s={%s}' % (key, ','.join(value))
+                   for key, value in settings.iteritems())
+
+
+def RenderText(font, text, features):
+  font_dir, font_name = os.path.split(font.filename)
+  feature_mapping = {
+      'rlig': ('Ligatures', 'Required'),
+      'liga': ('Ligatures', 'Common'),
+      'clig': ('Ligatures', 'Contextual'),
+      'dlig': ('Ligatures', 'Rare'),
+      'hlig': ('Ligatures', 'Historic'),
+
+      'case': ('Letters', 'Uppercase'),
+      'smcp': ('Letters', 'SmallCaps'),
+      'pcap': ('Letters', 'PetiteCaps'),
+      'c2sc': ('Letters', 'UppercaseSmallCaps'),
+      'c2pc': ('Letters', 'UppercasePetiteCaps'),
+      'unic': ('Letters', 'Unicase'),
+
+      'lnum': ('Numbers', 'Lining'),
+      'onum': ('Numbers', 'OldStyle'),
+      'pnum': ('Numbers', 'Proportional'),
+      'tnum': ('Numbers', 'Monospaced'),
+      'zero': ('Numbers', 'SlashedZero'),
+      'anum': ('Numbers', 'Arabic'),
+
+      'frac': ('Fractions', 'On'),
+      'afrc': ('Fractions', 'Alternate'),
+  }
+  # Add mapping for 10 stylistic sets
+  feature_mapping.update(('ss%02d' % x, ('StylisticSet', str(x))) for x in range(10))
+
+  escaped_text = TexEscape(text)
+  rendered_text = r'\customfont{%s}' % escaped_text
+  if features:
+    settings = {
+        'Scale': set('2',),
+        'Ligatures': set(('NoRequired', 'NoCommon', 'NoContextual')),
+    }
+    initial_settings = BuildFontSettings(settings)
+    for key, value in [v for k, v in feature_mapping.items() if k in features]:
+      if key not in settings:
+        settings[key] = set()
+
+      noval = 'No' + value
+      if noval in settings[key]:
+        settings[key].remove(noval)
+      else:
+        settings[key].add(value)
+    feature_line = BuildFontSettings(settings)
+    text
+    lines = (
+      r'\newfontface\reffont[Path=%s/,%s]{%s}' % (
+          font_dir, initial_settings, font_name),
+      r'No features vs. %s' % ', '.join(features),
+      r'\newline',
+      r'\reffont{%s}' % escaped_text,
+      r'\newline',
+      rendered_text,
+    )
+  else:
+    feature_line = 'Scale=2'
+    lines = (rendered_text,)
+
+  yield '\n'.join((
+    r'\documentclass{letter}',
+    r'\usepackage{fontspec}',
+    r'\usepackage[top=.25in, bottom=.25in, left=.5in, right=.5in]{geometry}',
+    r'\newfontface\customfont[Path=%s/, %s]{%s}' % (
+        font_dir, feature_line, font_name),
+    r'\begin{document}') + lines + (
+    r'\end{document}',
+  ))
+
 def main():
-  argv = sys.argv
-  if len(argv) == 3:
-    infile = argv[1]
-    outfile = argv[2]
-  elif len(argv) == 2:
-    infile = argv[1]
-    if infile in ('--version', '-v'):
-      print('FontReport version %s' % version.__version__)
-      sys.exit(0)
-    outfile = None
-  else:
-    print('Usage: %s infile [outfile]' % argv[0])
-    sys.exit(-1)
+  parser = argparse.ArgumentParser(
+      description='Font visualization and reporting tool')
+  parser.add_argument('-v', '--version',
+                      action='version',
+                      version='FontReport version %s' % version.__version__)
+  parser.add_argument('--render',
+                      metavar='TEXT',
+                      help='Text to render using provided font.')
+  parser.add_argument('--features',
+                      action='append',
+                      help='OpenType features to use for rendering')
+  parser.add_argument('font_file')
+  parser.add_argument('output_file', nargs='?')
+  args = parser.parse_args()
 
-  font = FontFile(infile)
-  envelope = Envelope(font)
-  if outfile:
-    name, ext = os.path.splitext(outfile)
-    tofile = outfile
-    xetex = False
-    if ext in ('.pdf', '.tex'):
-      xetex = True
-      if ext == '.pdf':
-        tofile = name + '.tex'
-
-    with open(tofile, 'wb') as f:
-      f.write(envelope.Report(xetex).encode('utf-8'))
-    if ext == '.pdf':
-      # Call twice to let longtable package calculate
-      # column width correctly
-      subprocess.check_call(['xelatex', tofile])
-      subprocess.check_call(['xelatex', tofile])
+  font = FontFile(args.font_file)
+  if args.render:
+    if not args.output_file:
+      print >>sys.stderr, 'Output .pdf file is required to render text'
+      sys.exit(-1)
+    ProcessTex(RenderText(font, args.render.decode('utf-8'), args.features),
+               args.output_file)
   else:
-    print(envelope.Report(False).encode('utf-8'))
+    envelope = Envelope(font)
+    if args.output_file:
+      name, ext = os.path.splitext(args.output_file)
+      if ext in ('.pdf', '.tex'):
+        ProcessTex([envelope.Report(True)], args.output_file)
+    else:
+      print(envelope.Report(False).encode('utf-8'))
 
 
 if __name__ == '__main__':
