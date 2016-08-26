@@ -581,7 +581,7 @@ def TexGlyph(glyph):
 
 
 def TexEscape(name):
-  return re.sub(r'([_#&{}\[\]])', r'\\\1', name)
+  return re.sub(r'([_#&%{}\[\]])', r'\\\1', name).replace('\n', '\\\\\n')
 
 
 def ProcessTex(sequence, output):
