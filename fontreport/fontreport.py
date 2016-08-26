@@ -601,7 +601,7 @@ def BuildFontSettings(settings):
                    for key, value in settings.iteritems())
 
 
-def RenderText(font, text, features):
+def RenderText(font, text, features, lang):
   font_dir, font_name = os.path.split(font.filename)
   feature_mapping = {
       'rlig': ('Ligatures', 'Required'),
@@ -626,17 +626,25 @@ def RenderText(font, text, features):
 
       'frac': ('Fractions', 'On'),
       'afrc': ('Fractions', 'Alternate'),
+
+      'pwid': ('CharacterWidth', 'Proportional'),
+      'fwid': ('CharacterWidth', 'Full'),
+      'Half': ('CharacterWidth', 'Half'),
+      'twid': ('CharacterWidth', 'Third'),
+      'qwid': ('CharacterWidth', 'Quarter'),
+      'palt': ('CharacterWidth', 'AlternateProportional'),
+      'halt': ('CharacterWidth', 'AlternateHalf'),
   }
   # Add mapping for 10 stylistic sets
   feature_mapping.update(('ss%02d' % x, ('StylisticSet', str(x))) for x in range(10))
 
   escaped_text = TexEscape(text)
   rendered_text = r'\customfont{%s}' % escaped_text
+  settings = {
+      'Scale': set('2',),
+  }
   if features:
-    settings = {
-        'Scale': set('2',),
-        'Ligatures': set(('NoRequired', 'NoCommon', 'NoContextual')),
-    }
+    settings['Ligatures'] = set(('NoRequired', 'NoCommon', 'NoContextual'))
     initial_settings = BuildFontSettings(settings)
     for key, value in [v for k, v in feature_mapping.items() if k in features]:
       if key not in settings:
@@ -647,20 +655,25 @@ def RenderText(font, text, features):
         settings[key].remove(noval)
       else:
         settings[key].add(value)
-    feature_line = BuildFontSettings(settings)
-    text
+    descr = 'No features vs. %s' % ', '.join(features)
+    if any(lang):
+      descr += ', %s script, %s language' % (
+          lang[0] or 'default',
+          lang[1] or 'default'
+      )
     lines = (
       r'\newfontface\reffont[Path=%s/,%s]{%s}' % (
           font_dir, initial_settings, font_name),
-      r'No features vs. %s' % ', '.join(features),
+      descr,
       r'\newline',
       r'\reffont{%s}' % escaped_text,
       r'\newline',
       rendered_text,
     )
   else:
-    feature_line = 'Scale=2'
     lines = (rendered_text,)
+  settings.update((k, (v,)) for k, v in zip(('Script', 'Language'), lang) if v)
+  feature_line = BuildFontSettings(settings)
 
   yield '\n'.join((
     r'\documentclass{letter}',
@@ -688,6 +701,10 @@ def main():
   parser.add_argument('--features',
                       action='append',
                       help='OpenType features to use for rendering')
+  parser.add_argument('--script',
+                      help='Script to use for text rendering')
+  parser.add_argument('--language',
+                      help='Language to use for text rendering')
   parser.add_argument('font_file')
   parser.add_argument('output_file', nargs='?')
   args = parser.parse_args()
@@ -703,7 +720,9 @@ def main():
     if not args.output_file:
       print >>sys.stderr, 'Output .pdf file is required to render text'
       sys.exit(-1)
-    ProcessTex(RenderText(font, text.decode('utf-8'), args.features),
+    ProcessTex(RenderText(font, text.decode('utf-8'),
+                          args.features,
+                          (args.script, args.language)),
                args.output_file)
   else:
     envelope = Envelope(font)
