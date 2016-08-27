@@ -25,6 +25,9 @@ Reports are generated in PDF format and contain font-specific rendering of
 the glyphs supported by the font.
 
 """
+
+from __future__ import print_function
+
 import argparse
 import os
 import re
@@ -33,7 +36,8 @@ import sys
 import unicodedata
 from fontTools.misc.py23 import *
 from fontTools.ttLib import TTFont
-import version
+
+from . import version
 
 
 class Glyph(object):
@@ -590,7 +594,7 @@ def ProcessTex(sequence, output):
   with open(intermediate, 'wb') as f:
     for line in sequence:
       f.write(line.encode('utf-8'))
-      f.write('\n')
+      f.write(b'\n')
   if ext == '.pdf':
     subprocess.check_call(['xelatex', intermediate])
     subprocess.check_call(['xelatex', intermediate])
@@ -717,7 +721,7 @@ def main():
     text = args.render
   if text:
     if not args.output_file:
-      print >>sys.stderr, 'Output .pdf file is required to render text'
+      print('Output .pdf file is required to render text', file=sys.stderr)
       sys.exit(-1)
     ProcessTex(RenderText(font, text.decode('utf-8'),
                           args.features,
