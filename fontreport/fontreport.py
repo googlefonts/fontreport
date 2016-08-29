@@ -40,6 +40,10 @@ from fontTools.ttLib import TTFont
 from . import version
 
 
+class Error(Exception):
+  pass
+
+
 class Glyph(object):
   """Representation of a single glyph.
 
@@ -175,7 +179,7 @@ class FontFile(object):
               glyph = component.LigGlyph
               self.substitutes.add((sequence, ((glyph,),), idx, 4))
         else:
-          print('Lookup table %d: type %s not yet supported.' % (
+          print('Warning: Lookup table %d: type %s not yet supported.' % (
               idx, sub.LookupType))
 
   def _ParseGlyphs(self):
@@ -651,6 +655,34 @@ def RenderText(font, text, features, lang):
     r'\end{document}',
   ))
 
+def Process(args):
+  font = FontFile(args.font_file)
+  text = None
+  if args.render_file:
+    with open(args.render_file, 'rb') as f:
+      text = f.read()
+  elif args.render:
+    text = args.render
+  if text:
+    if not args.output_file:
+      raise Error('Output .pdf file is required to render text')
+    ProcessTex(RenderText(font,
+                          (text.decode('utf-8')
+                           if hasattr(text, 'decode') else text),
+                          args.features,
+                          (args.script, args.language)),
+               args.output_file)
+  else:
+    envelope = Envelope(font)
+    if args.output_file:
+      name, ext = os.path.splitext(args.output_file)
+      if ext in ('.pdf', '.tex'):
+        ProcessTex([envelope.Report(True)], args.output_file)
+    else:
+      report = envelope.Report(False)
+      print(report.encode('utf-8') if hasattr(report, 'decode') else report)
+
+
 def main():
   parser = argparse.ArgumentParser(
       description='Font visualization and reporting tool')
@@ -675,34 +707,11 @@ def main():
   parser.add_argument('font_file')
   parser.add_argument('output_file', nargs='?')
   args = parser.parse_args()
-
-  font = FontFile(args.font_file)
-  text = None
-  if args.render_file:
-    with open(args.render_file, 'rb') as f:
-      text = f.read()
-  elif args.render:
-    text = args.render
-  if text:
-    if not args.output_file:
-      print('Output .pdf file is required to render text', file=sys.stderr)
-      sys.exit(-1)
-    print(type(text), text)
-    ProcessTex(RenderText(font,
-                          (text.decode('utf-8')
-                           if hasattr(text, 'decode') else text),
-                          args.features,
-                          (args.script, args.language)),
-               args.output_file)
-  else:
-    envelope = Envelope(font)
-    if args.output_file:
-      name, ext = os.path.splitext(args.output_file)
-      if ext in ('.pdf', '.tex'):
-        ProcessTex([envelope.Report(True)], args.output_file)
-    else:
-      report = envelope.Report(False)
-      print(report.encode('utf-8') if hasattr(report, 'decode') else report)
+  try:
+    Process(args)
+  except Error as e:
+    print('ERROR: ', e, file=sys.stderr)
+    sys.exit(-1)
 
 
 if __name__ == '__main__':
