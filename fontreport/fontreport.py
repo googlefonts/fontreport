@@ -607,40 +607,6 @@ def BuildFontSettings(settings):
 
 def RenderText(font, text, features, lang):
   font_dir, font_name = os.path.split(font.filename)
-  feature_mapping = {
-      'rlig': ('Ligatures', 'Required'),
-      'liga': ('Ligatures', 'Common'),
-      'clig': ('Ligatures', 'Contextual'),
-      'dlig': ('Ligatures', 'Rare'),
-      'hlig': ('Ligatures', 'Historic'),
-
-      'case': ('Letters', 'Uppercase'),
-      'smcp': ('Letters', 'SmallCaps'),
-      'pcap': ('Letters', 'PetiteCaps'),
-      'c2sc': ('Letters', 'UppercaseSmallCaps'),
-      'c2pc': ('Letters', 'UppercasePetiteCaps'),
-      'unic': ('Letters', 'Unicase'),
-
-      'lnum': ('Numbers', 'Lining'),
-      'onum': ('Numbers', 'OldStyle'),
-      'pnum': ('Numbers', 'Proportional'),
-      'tnum': ('Numbers', 'Monospaced'),
-      'zero': ('Numbers', 'SlashedZero'),
-      'anum': ('Numbers', 'Arabic'),
-
-      'frac': ('Fractions', 'On'),
-      'afrc': ('Fractions', 'Alternate'),
-
-      'pwid': ('CharacterWidth', 'Proportional'),
-      'fwid': ('CharacterWidth', 'Full'),
-      'Half': ('CharacterWidth', 'Half'),
-      'twid': ('CharacterWidth', 'Third'),
-      'qwid': ('CharacterWidth', 'Quarter'),
-      'palt': ('CharacterWidth', 'AlternateProportional'),
-      'halt': ('CharacterWidth', 'AlternateHalf'),
-  }
-  # Add mapping for 10 stylistic sets
-  feature_mapping.update(('ss%02d' % x, ('StylisticSet', str(x))) for x in range(10))
 
   escaped_text = TexEscape(text)
   rendered_text = r'{\customfont %s}' % escaped_text
@@ -648,18 +614,13 @@ def RenderText(font, text, features, lang):
       'Scale': set('2',),
   }
   if features or lang:
-    settings['Ligatures'] = set(('NoRequired', 'NoCommon', 'NoContextual'))
+    settings['RawFeature'] = ['-rlig','-liga','-clig']
     initial_settings = BuildFontSettings(settings)
-    for key, value in [v for k, v in feature_mapping.items() if k in features]:
-      if key not in settings:
-        settings[key] = set()
-
-      noval = 'No' + value
-      if noval in settings[key]:
-        settings[key].remove(noval)
-      else:
-        settings[key].add(value)
-    used_features = [x for x in features if x in feature_mapping]
+    settings['RawFeature'] = (
+        ['+' + x for x in features] +
+        [x for x in settings['RawFeature'] if x[1:] not in features]
+    )
+    used_features = list(features)
     if used_features:
       used_features[0] = 'OpenType feature(s) ' + used_features[0]
     used_features = ['%s %s' % x
