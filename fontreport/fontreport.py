@@ -659,13 +659,16 @@ def RenderText(font, text, features, lang):
         settings[key].remove(noval)
       else:
         settings[key].add(value)
+    used_features = [x for x in features if x in feature_mapping]
+    if used_features:
+      used_features[0] = 'OpenType feature(s) ' + used_features[0]
     used_features = ['%s %s' % x
                      for x in zip(lang, ('script', 'language'))
-                     if x[0]] + [x for x in features if x in feature_mapping]
+                     if x[0]] + used_features
     lines = (
-      r'\newfontface\reffont[Path=%s/,Color=707070,%s]{%s}' % (
+      r'\newfontface\reffont[Path=%s/,Color=0000AA,%s]{%s}' % (
           font_dir, initial_settings, font_name),
-      ', '.join(used_features) + r' vs. {\color{refcolor} no OpenType features}\\',
+      ', '.join(used_features) + r' compared to {\color{refcolor} defaults}\\',
       rendered_text,
       r'\\'
       r'{\reffont %s}' % escaped_text,
@@ -679,7 +682,7 @@ def RenderText(font, text, features, lang):
     r'\documentclass{letter}',
     r'\usepackage{fontspec}',
     r'\usepackage{color}',
-    r'\definecolor{refcolor}{gray}{.44}',
+    r'\definecolor{refcolor}{RGB}{0,0,170}',
     r'\usepackage[top=.25in, bottom=.25in, left=.5in, right=.5in]{geometry}',
     r'\newfontface\customfont[Path=%s/, %s]{%s}' % (
         font_dir, feature_line, font_name),
