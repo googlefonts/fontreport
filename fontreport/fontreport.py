@@ -602,7 +602,7 @@ def ProcessTex(sequence, output):
 
 def BuildFontSettings(settings):
   return ', '.join('%s={%s}' % (key, ','.join(value))
-                   for key, value in settings.iteritems())
+                   for key, value in settings.items())
 
 
 def RenderText(font, text, features, lang):
@@ -687,7 +687,10 @@ def main():
     if not args.output_file:
       print('Output .pdf file is required to render text', file=sys.stderr)
       sys.exit(-1)
-    ProcessTex(RenderText(font, text.decode('utf-8'),
+    print(type(text), text)
+    ProcessTex(RenderText(font,
+                          (text.decode('utf-8')
+                           if hasattr(text, 'decode') else text),
                           args.features,
                           (args.script, args.language)),
                args.output_file)
@@ -698,7 +701,8 @@ def main():
       if ext in ('.pdf', '.tex'):
         ProcessTex([envelope.Report(True)], args.output_file)
     else:
-      print(envelope.Report(False).encode('utf-8'))
+      report = envelope.Report(False)
+      print(report.encode('utf-8') if hasattr(report, 'decode') else report)
 
 
 if __name__ == '__main__':
