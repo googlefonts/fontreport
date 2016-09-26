@@ -243,6 +243,35 @@ class Report(object):
       body = self.TETEX_HEADER + body + self.TETEX_FOOTER
     return body
 
+class NamesReport(Report):
+  """Report font names info."""
+
+  TETEX_HEADER = r'''
+    \begin{longtable}[l]{|l|l|}
+    \hline
+    \endhead
+    \hline
+    \endfoot
+  '''
+  TETEX_FOOTER = r'\end{longtable}'
+
+  NAME = 'Font Metadata'
+
+  def Plaintext(self):
+    data = ''
+    for category, code in sorted(FontFile.NAME_CODES.items(),
+                                 key=lambda x:x[1]):
+      if code in self.font._names:
+        data += '%15s: %s\n' % (category, self.font._names[code])
+    return data
+
+  def XetexBody(self):
+    data = ''
+    for category, code in sorted(FontFile.NAME_CODES.items(),
+                                 key=lambda x:x[1]):
+      if code in self.font._names:
+        data += '%s & %s \\\\\n' % (category, self.font._names[code])
+    return data
 
 class UnicodeCoverageReport(Report):
   """Report font unicode coverage."""
@@ -552,7 +581,8 @@ class Envelope(Report):
     \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
   '''
 
-  KNOWN_REPORTS = (SummaryReport, UnicodeCoverageReport,
+  KNOWN_REPORTS = (SummaryReport, NamesReport,
+                   UnicodeCoverageReport,
                    GlyphsReport, FeaturesReport,
                    LigaturesReport, SubstitutionsReport)
 
