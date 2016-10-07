@@ -74,9 +74,9 @@ class FontFile(object):
                 'Description': 10, 'Vendor URL': 11, 'Designer URL': 12,
                 'License': 13, 'License URL': 14, 'Sample Text': 19}
 
-  def __init__(self, filename):
+  def __init__(self, filename, font_number=-1):
     self.filename = filename
-    self.ttf = TTFont(filename, fontNumber=-1, lazy=False)
+    self.ttf = TTFont(filename, fontNumber=font_number, lazy=False)
     self._names = {}
     self.chars = {}
     self._glyphsmap = {}
@@ -686,7 +686,7 @@ def RenderText(font, text, features, lang):
   ))
 
 def Process(args):
-  font = FontFile(args.font_file)
+  font = FontFile(args.font_file, font_number=args.index)
   text = None
   if args.render_file:
     with open(args.render_file, 'rb') as f:
@@ -734,6 +734,9 @@ def main():
                       help='Script to use for text rendering')
   parser.add_argument('--language',
                       help='Language to use for text rendering')
+  parser.add_argument('--index',
+                      default=-1, type=int,
+                      help='Font index in TTC or OTC input file.')
   parser.add_argument('font_file')
   parser.add_argument('output_file', nargs='?')
   args = parser.parse_args()
