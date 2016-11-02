@@ -163,6 +163,8 @@ class FontFile(object):
 
     for idx, lookup in enumerate(self.ttf['GSUB'].table.LookupList.Lookup):
       for sub in lookup.SubTable:
+        if sub.LookupType == 7:
+          sub = sub.ExtSubTable
         if sub.LookupType == 1:
           for k, v in sub.mapping.items():
             self.substitutes.add(((k,), ((v,),), idx, 1))
