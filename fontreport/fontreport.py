@@ -272,7 +272,8 @@ class NamesReport(Report):
     for category, code in sorted(FontFile.NAME_CODES.items(),
                                  key=lambda x:x[1]):
       if code in self.font._names:
-        data += '%s & %s \\\\\n' % (category, self.font._names[code])
+        data += '%s & %s \\\\\n' % (category,
+                                    TexEscape(self.font._names[code]))
     return data
 
 class UnicodeCoverageReport(Report):
