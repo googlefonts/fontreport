@@ -142,8 +142,11 @@ class FontFile(object):
     if 'GSUB' not in self.ttf:
       return
 
-    scripts = [set() for unused_x
-               in range(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
+    if self.ttf['GSUB'].table.FeatureList:
+      scripts = [set() for unused_x
+                 in range(self.ttf['GSUB'].table.FeatureList.FeatureCount)]
+    else:
+      scripts = []
     # Find scripts defined in a font
     for script in self.ttf['GSUB'].table.ScriptList.ScriptRecord:
       if script.Script.DefaultLangSys:
@@ -154,13 +157,16 @@ class FontFile(object):
           scripts[idx].add(script.ScriptTag + '-' + lang.LangSysTag)
 
     # Find all featrures defined in a font
-    for idx, feature in enumerate(
-        self.ttf['GSUB'].table.FeatureList.FeatureRecord):
-      key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
-      if key not in self.features:
-        self.features[key] = set()
-      self.features[key].update(scripts[idx])
+    if hasattr(self.ttf['GSUB'].table, 'FeatureRecord'):
+      for idx, feature in enumerate(
+          self.ttf['GSUB'].table.FeatureList.FeatureRecord):
+        key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
+        if key not in self.features:
+          self.features[key] = set()
+        self.features[key].update(scripts[idx])
 
+    if not self.ttf['GSUB'].table.LookupList:
+      return
     for idx, lookup in enumerate(self.ttf['GSUB'].table.LookupList.Lookup):
       for sub in lookup.SubTable:
         if sub.LookupType == 7:
