@@ -631,6 +631,15 @@ def TexEscape(name):
   return re.sub(r'([_#&%{}\[\]])', r'\\\1', name).replace('\n', '\\\\\n')
 
 
+def ProcessPlaintext(report, output=None):
+  text = report.encode('utf-8') if hasattr(report, 'decode') else report
+  if output:
+    with open(output, 'wb') as f:
+      f.write(text)
+  else:
+    print(text)
+
+
 def ProcessTex(sequence, output):
   name, ext = os.path.splitext(output)
   intermediate = name + '.tex'
@@ -717,9 +726,10 @@ def Process(args):
       name, ext = os.path.splitext(args.output_file)
       if ext in ('.pdf', '.tex'):
         ProcessTex([envelope.Report(True)], args.output_file)
+      else:
+        ProcessPlaintext(envelope.Report(False), args.output_file)
     else:
-      report = envelope.Report(False)
-      print(report.encode('utf-8') if hasattr(report, 'decode') else report)
+      ProcessPlaintext(envelope.Report(False))
 
 
 def main():
