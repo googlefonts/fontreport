@@ -407,6 +407,202 @@ class LigaturesReport(Report):
     return data
 
 
+class ChartReport(Report):
+  """Report glyphs in a format of Unicode charts."""
+  ROWS = 16
+  COLUMNS = 16
+  TETEX_HEADER = r'''
+    \newcommand\cell[2]{\begin{tabular}[c]{@{}c@{}}
+      \customfont{\symbol{#1}}\\ \tiny{#2}\end{tabular}}
+  '''
+  CHART_HEADER = r'''
+    \subsection{%%s}
+    \begin{tabular}{r|%s|}
+  ''' % '|'.join(('c',) * COLUMNS)
+  CHART_FOOTER = r'\end{tabular}\pagebreak'
+  TETEX_FOOTER = ''
+
+  NAME = 'Block'
+
+  def Plaintext(self):
+    data = ''
+    return data
+
+  def GenerateBlocks(self, rows, cols):
+    def NewBlock():
+      return [False for x in xrange(rows * cols)]
+    current_block = -1
+    block = None
+    span = rows * cols
+    for code in sorted(self.font.chars):
+      blockno = code / span
+      offset = code % span
+      if current_block != blockno:
+        if block:
+          yield current_block * span, block
+        block = NewBlock()
+        current_block = blockno
+      block[offset] = True
+    if block:
+      yield current_block * span, block
+
+  def XetexBody(self):
+    data = ''
+    for idx, block in self.GenerateBlocks(self.ROWS, self.COLUMNS):
+      subtitle = '%04X - %04X' % (idx,
+                                  idx + self.ROWS * self.COLUMNS - 1)
+      data += self.CHART_HEADER % subtitle
+      data += '&' + ' & '.join('\\multicolumn{1}{c%s}{%03X}' % (
+          '|' if x == self.COLUMNS -1 else '',
+          idx / self.COLUMNS + x, ) for x in range(self.COLUMNS))
+      data += '\\\\\n\\cline{2-17}\n'
+      for row_idx in range(self.ROWS):
+        row = ['\small{%X}' % row_idx]
+        for col_idx in range(self.COLUMNS):
+          offset = col_idx * self.ROWS + row_idx
+          code = idx + offset
+          if block[offset]:
+            cell = '\\cell{%d}{%04X}' % (code, code)
+          else:
+            cell = '\\cellcolor{red}{\\cell{0}{%04X}}' % (code)
+          row.append(cell)
+        data += ' & '.join(row) + '\\\\\n\\cline{2-17}\n'
+      data += self.CHART_FOOTER
+    return data
+
+
+class GridReport(Report):
+  """Report glyphs in a grid."""
+  TETEX_HEADER = r'''
+    \newcommand\gl[1]{\tiny{#1}}
+    \newcommand\glyph[3]{\Large\customfont{\textcolor{gray}{#1}}{\textcolor{blue}{#2}}{\textcolor{gray}{{#3}}}}
+    \begin{longtable}[l]{|c|c|c|c|c|c|c|c|}
+    \hline
+    \endhead
+    \hline
+    \endfoot
+  '''
+  TETEX_FOOTER = r'\end{longtable}'
+  VARIANT_COLOR = 'yellow'
+  ROW_LENGTH = 8
+
+  NAME = 'Characters'
+
+  def Plaintext(self):
+    data = ''
+    return data
+
+  def GetVariantsMap(self):
+    features_mapping = self.font.GetFeaturesByTable()
+    alt_map = {}
+    prefixes = []
+    suffixes = []
+    for src, dest, table, kind in self.font.substitutes:
+      if kind == 1 or kind == 3:
+        glyph = self.font.GetGlyph(src[0])
+        if glyph.chars:
+          key = glyph.chars[0]
+          if not key in alt_map:
+            alt_map[key] = []
+          if table in features_mapping:
+            label = (x[0] for x in features_mapping[table]).next()
+          else:
+            label = 'var'
+          for g in dest[0]:
+            alt_map[key].append((g, label))
+            if label in ('medi', 'fina'):
+              prefixes.append(g)
+            if label in ('medi', 'init'):
+              suffixes.append(g)
+    return (alt_map, prefixes, suffixes)
+
+  def XetexBody(self):
+    def Cell(text, color=None):
+      return '\cellcolor{%s!10}{%s}' % (color, text) if color else text
+
+    alt_map, prefixes, suffixes = self.GetVariantsMap()
+    mapped = set()
+    scripts = {}
+    unimap = {}
+    grid_data = []
+    for code, glyph in sorted(self.font.chars.iteritems()):
+      char = unichr(code)
+      name = unicodedata.name(char, '').lower()
+      category = unicodedata.category(char)
+      prefix, suffix = None, None
+      if category[0] == 'L':
+        # Python unicodedata package does not contain script
+        # data for characters. Use a hack for a proof-of-concept now.
+        # TODO: Use unicode script data if script-based candidates
+        # selection is proven to be useful.
+        script = name.split()[0]
+        if script not in scripts:
+          scripts[script] = []
+        scripts[script].append(code)
+        unimap[code] = (script, category)
+      if unicodedata.bidirectional(char) == 'AL':
+        m = re.search(r'(isol|fina|medi|init)[a-z]* form', name)
+        label = m.group(1) if m else 'isol'
+      else:
+        label = None
+      grid_data.append(('u%04X' % code, code, glyph, label))
+      mapped.add(glyph)
+      for item in sorted(alt_map.get(code, ()), key=lambda x:x[1]):
+        glyph, label = item
+        if glyph not in mapped:
+          mapped.add(glyph)
+          grid_data.append(('u%04X, %s' % (code, TexEscape(label)), code, glyph, label))
+    for glyph in self.font.glyphs:
+      if glyph.name not in mapped:
+        grid_data.append((TexEscape(glyph.name[:10]), None, glyph.name, None))
+
+    ngrams = []
+    for item in ngram.NGRAMS:
+      if all(ord(x) in unimap for x in item):
+        ngrams.append(item)
+    col = 0
+    data = ''
+    labels, glyphs = [], []
+    for label, code, glyph, other in grid_data:
+      suffix, prefix = None, None
+      if code and code in unimap:
+        script, category = unimap[code]
+        # TODO: get rid of ad hoc arabic handling
+        if script != 'arabic':
+          match = sorted((x for x in ngrams if x[0] == unichr(code)),
+                         key=lambda k: tuple(x.isalpha() for x in k),
+                         reverse=True)
+          if match:
+            prefix = self.font.chars[ord(match[0][1])]
+            suffix = self.font.chars[ord(match[0][2])]
+          else:
+            candidates = scripts[script]
+            prefix = self.font.chars[random.choice(scripts[script])]
+            suffix = self.font.chars[random.choice(scripts[script])]
+      color = self.VARIANT_COLOR if ',' in label else None
+      labels.append(Cell('\\gl{%s}' % label, color))
+      if not prefix and other not in ('fina', 'isol') and prefixes:
+        prefix = random.choice(prefixes)
+      if not suffix and other not in ('init', 'isol') and suffixes:
+        suffix = random.choice(suffixes)
+      if code and not other:
+        content = r'\symbol{%s}' % code
+      else:
+        content = r'{\XeTeXglyph %d}' % self.font.GetGlyph(glyph).index
+      formatted = '{\\glyph{%s}{%s}{%s}}' % (
+          (r'{\XeTeXglyph %d}' % self.font.GetGlyph(prefix).index) if prefix else '',
+          content,
+          (r'{\XeTeXglyph %d}' % self.font.GetGlyph(suffix).index) if suffix else ''
+      )
+      glyphs.append(Cell(formatted, color))
+      col = (col + 1) % self.ROW_LENGTH
+      if not col:
+        data += ' & '.join(glyphs) + '\\\\\n'
+        data += ' & '.join(labels) + '\\\\\n\\hline\n'
+        labels, glyphs = [], []
+    return data
+
+
 class SubstitutionsReport(Report):
   """Report GPOS substitutions."""
   TETEX_HEADER = r'''
@@ -590,7 +786,7 @@ class Envelope(Report):
     \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
   '''
 
-  KNOWN_REPORTS = (SummaryReport, NamesReport,
+  KNOWN_REPORTS = (SummaryReport, NamesReport, ChartReport,
                    UnicodeCoverageReport,
                    GlyphsReport, FeaturesReport,
                    LigaturesReport, SubstitutionsReport)
