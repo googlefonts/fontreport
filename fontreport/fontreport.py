@@ -430,7 +430,7 @@ class ChartReport(Report):
 
   def GenerateBlocks(self, rows, cols):
     def NewBlock():
-      return [False for x in xrange(rows * cols)]
+      return [False for x in range(rows * cols)]
     current_block = -1
     block = None
     span = rows * cols
