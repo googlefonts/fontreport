@@ -362,6 +362,71 @@ class LigaturesReport(Report):
           coords, '-')
     return data
 
+
+class ChartReport(Report):
+  """Report glyphs in a format of Unicode charts."""
+  ROWS = 16
+  COLUMNS = 16
+  TETEX_HEADER = r'''
+    \newcommand\cell[2]{\begin{tabular}[c]{@{}c@{}}
+      \customfont{\symbol{#1}}\\ \tiny{#2}\end{tabular}}
+  '''
+  CHART_HEADER = r'''
+    \subsection{%%s}
+    \begin{tabular}{r|%s|}
+  ''' % '|'.join(('c',) * COLUMNS)
+  CHART_FOOTER = r'\end{tabular}\pagebreak'
+  TETEX_FOOTER = ''
+
+  NAME = 'Block'
+
+  def Plaintext(self):
+    data = ''
+    return data
+
+  def GenerateBlocks(self, rows, cols):
+    def NewBlock():
+      return [False for x in xrange(rows * cols)]
+    current_block = -1
+    block = None
+    span = rows * cols
+    for code in sorted(self.font.chars):
+      blockno = code / span
+      offset = code % span
+      if current_block != blockno:
+        if block:
+          yield current_block * span, block
+        block = NewBlock()
+        current_block = blockno
+      block[offset] = True
+    if block:
+      yield current_block * span, block
+
+  def XetexBody(self):
+    data = ''
+    for idx, block in self.GenerateBlocks(self.ROWS, self.COLUMNS):
+      subtitle = '%04X - %04X' % (idx,
+                                  idx + self.ROWS * self.COLUMNS - 1)
+      data += self.CHART_HEADER % subtitle
+      data += '&' + ' & '.join('\\multicolumn{1}{c%s}{%03X}' % (
+          '|' if x == self.COLUMNS -1 else '',
+          idx / self.COLUMNS + x, ) for x in range(self.COLUMNS))
+      data += '\\\\\n\\cline{2-17}\n'
+      for row_idx in range(self.ROWS):
+        row = ['\small{%X}' % row_idx]
+        for col_idx in range(self.COLUMNS):
+          offset = col_idx * self.ROWS + row_idx
+          code = idx + offset
+          if block[offset]:
+            cell = '\\cell{%d}{%04X}' % (code, code)
+          else:
+            cell = '\\cellcolor{red}{\\cell{0}{%04X}}' % (code)
+          row.append(cell)
+        data += ' & '.join(row) + '\\\\\n\\cline{2-17}\n'
+      data += self.CHART_FOOTER
+    return data
+
+
 class GridReport(Report):
   """Report glyphs in a grid."""
   TETEX_HEADER = r'''
@@ -447,7 +512,6 @@ class GridReport(Report):
       if glyph.name not in mapped:
         grid_data.append((TexEscape(glyph.name[:10]), None, glyph.name, None))
 
-    print 'X'
     ngrams = []
     for item in ngram.NGRAMS:
       if all(ord(x) in unimap for x in item):
@@ -492,7 +556,6 @@ class GridReport(Report):
         data += ' & '.join(glyphs) + '\\\\\n'
         data += ' & '.join(labels) + '\\\\\n\\hline\n'
         labels, glyphs = [], []
-    print 'Y'
     return data
 
 
@@ -680,7 +743,7 @@ class Envelope(Report):
   '''
   #  \newfontface\customfont[Path = %s/, Color = 0000AA]{%s}
 
-  KNOWN_REPORTS = (SummaryReport, GridReport, UnicodeCoverageReport,
+  KNOWN_REPORTS = (SummaryReport, ChartReport, UnicodeCoverageReport,
                    GlyphsReport, FeaturesReport,
                    LigaturesReport, SubstitutionsReport)
 
