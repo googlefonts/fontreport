@@ -76,6 +76,10 @@ class FontFile(object):
 
   def __init__(self, filename, font_number=-1):
     self.filename = filename
+    if (self.filename and not (self.filename.startswith('/') or
+                               self.filename.startswith('./'))):
+      self.filename = './' + self.filename
+
     self.ttf = TTFont(filename, fontNumber=font_number, lazy=False)
     self._names = {}
     self.chars = {}
@@ -304,7 +308,7 @@ class UnicodeCoverageReport(Report):
         uniname = unicodedata.name(unichr(code))
       except ValueError:
         uniname = ''
-      data += '  U+%04X %-30s %s\n' % (code, name, uniname)
+      data += '  U+%04X [%c] %-30s %s\n' % (code, unichr(code), name, uniname)
     return data
 
   def XetexBody(self):
