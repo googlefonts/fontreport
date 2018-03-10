@@ -40,6 +40,11 @@ from fontTools.ttLib import TTFont
 from . import version
 
 
+# Mapping of font script and language IDs into HTML language tags.
+# TODO: Populate it with actual mapping.
+LANGUAGE_TAGS = {}
+
+
 class Error(Exception):
   pass
 
@@ -60,6 +65,9 @@ class Glyph(object):
     self.alternates = None
     self.chars = []
     self.index = -1
+
+  def GetCodePoint(self, idx=0):
+    return self.chars[idx] if self.chars else None
 
 
 class FontFile(object):
@@ -158,10 +166,10 @@ class FontFile(object):
           scripts[idx].add(script.ScriptTag)
       for lang in script.Script.LangSysRecord:
         for idx in lang.LangSys.FeatureIndex:
-          scripts[idx].add(script.ScriptTag + '-' + lang.LangSysTag)
+          scripts[idx].add(script.ScriptTag + '-' + lang.LangSysTag.strip())
 
     # Find all featrures defined in a font
-    if hasattr(self.ttf['GSUB'].table, 'FeatureRecord'):
+    if hasattr(self.ttf['GSUB'].table, 'FeatureList'):
       for idx, feature in enumerate(
           self.ttf['GSUB'].table.FeatureList.FeatureRecord):
         key = (feature.FeatureTag, tuple(feature.Feature.LookupListIndex))
@@ -232,6 +240,17 @@ class FontFile(object):
 
   def GetGlyph(self, name):
     return self._glyphsmap[name]
+
+  def GetGSUBItems(self):
+    features_mapping = self.GetFeaturesByTable()
+    for src, dest, table, unused_kind in sorted(
+        self.substitutes, key=lambda x: (x[2], x[0])):
+      if table in features_mapping:
+        features = sorted(set(k for k, v in features_mapping[table]))
+        langs = sorted(set(x for k, v in features_mapping[table] for x in v))
+      else:
+        features, langs = (), ()
+      yield (table, features, langs, src, dest)
 
 
 class Report(object):
@@ -621,11 +640,11 @@ class SubstitutionsReport(Report):
   '''
   TETEX_FOOTER = r'\end{longtable}'
 
-  NAME = 'GPOS Substitutions'
+  NAME = 'GSUB Substitutions'
 
   def Plaintext(self):
     data = ''
-    for table, features, src, dest in self.GetTableItems():
+    for table, features, unused_langs, src, dest in self.font.GetGSUBItems():
       data += '%4d\t%-20s\t%s\n' % (
           table,
           ', '.join(features),
@@ -636,7 +655,7 @@ class SubstitutionsReport(Report):
   def XetexBody(self):
     features_mapping = self.font.GetFeaturesByTable()
     data = ''
-    for table, features, src, dest in self.GetTableItems():
+    for table, features, unused_langs, src, dest in self.font.GetGSUBItems():
       sequence = ' '.join('%s(%s)' % (
           TexGlyph(self.font.GetGlyph(x)),
           TexEscape(x)) for x in src)
@@ -647,15 +666,6 @@ class SubstitutionsReport(Report):
           table, ', '.join(features), sequence, alternates)
     return data
 
-  def GetTableItems(self):
-    features_mapping = self.font.GetFeaturesByTable()
-    for src, dest, table, unused_kind in sorted(
-        self.font.substitutes, key=lambda x: (x[2], x[0])):
-      if table in features_mapping:
-        features = sorted(set(k for k, v in features_mapping[table]))
-      else:
-        features = ()
-      yield (table, features, src, dest)
 
 
 class FeaturesReport(Report):
@@ -903,6 +913,32 @@ def RenderText(font, text, features, lang):
     r'\end{document}',
   ))
 
+
+def GetLanguageTagForFontLanguage(font_lang):
+  LANGUAGE_TAG_MAPfont_lan
+
+
+def FontDiffOutput(font, output_file):
+  data = ''
+
+  for table, features, langs, src, dest in font.GetGSUBItems():
+    seq = ['&#x%04x;' % x if x else None
+           for x in (font.GetGlyph(x).GetCodePoint() for x in src)]
+    # Source sequence can not be directly mapped to unicode code points,
+    # skip it from the report.
+    # TODO: Add detection of multiple glyph substitutions that result
+    # in code points.
+    if None in seq:
+      continue
+    if langs:
+      lang_tag = ' lang="%s"' % LANGUAGE_TAGS.get(langs[0], langs[0])
+    else:
+      lang_tag = ''
+    data += '<div%s>%s = %s</div>\n' % (lang_tag, ' + '.join(seq), ''.join(seq))
+  with open(output_file, 'w') as f:
+    f.write(u'<html><body>\n%s</body></html>' % data)
+
+
 def Process(args):
   font = FontFile(args.font_file, font_number=args.index)
   text = None
@@ -921,15 +957,18 @@ def Process(args):
                           (args.script, args.language)),
                args.output_file)
   else:
-    envelope = Envelope(font)
-    if args.output_file:
-      name, ext = os.path.splitext(args.output_file)
-      if ext in ('.pdf', '.tex'):
-        ProcessTex([envelope.Report(True)], args.output_file)
-      else:
-        ProcessPlaintext(envelope.Report(False), args.output_file)
+    if args.output_file and args.output_file.endswith('.html'):
+      FontDiffOutput(font, args.output_file)
     else:
-      ProcessPlaintext(envelope.Report(False))
+      envelope = Envelope(font)
+      if args.output_file:
+        name, ext = os.path.splitext(args.output_file)
+        if ext in ('.pdf', '.tex'):
+          ProcessTex([envelope.Report(True)], args.output_file)
+        else:
+          ProcessPlaintext(envelope.Report(False), args.output_file)
+      else:
+        ProcessPlaintext(envelope.Report(False))
 
 
 def main():
