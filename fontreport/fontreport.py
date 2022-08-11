@@ -472,12 +472,13 @@ class ChartReport(Report):
   def XetexBody(self):
     data = ''
     for idx, block in self.GenerateBlocks(self.ROWS, self.COLUMNS):
+      idx = int(idx)
       subtitle = '%04X - %04X' % (idx,
                                   idx + self.ROWS * self.COLUMNS - 1)
       data += self.CHART_HEADER % subtitle
       data += '&' + ' & '.join('\\multicolumn{1}{c%s}{%03X}' % (
           '|' if x == self.COLUMNS -1 else '',
-          idx / self.COLUMNS + x, ) for x in range(self.COLUMNS))
+          idx // self.COLUMNS + x, ) for x in range(self.COLUMNS))
       data += '\\\\\n\\cline{2-17}\n'
       for row_idx in range(self.ROWS):
         row = ['\small{%X}' % row_idx]
@@ -845,7 +846,7 @@ def ProcessPlaintext(report, output=None):
   text = report.encode('utf-8') if hasattr(report, 'decode') else report
   if output:
     with open(output, 'wb') as f:
-      f.write(text)
+      f.write(text.encode('utf-8'))
   else:
     print(text)
 
